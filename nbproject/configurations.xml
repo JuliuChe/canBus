@@ -4,6 +4,12 @@
     <logicalFolder name="HeaderFiles"
                    displayName="Header Files"
                    projectFiles="true">
+      <itemPath>../canBus.X/can.h</itemPath>
+      <itemPath>../canBus.X/can_defines.h</itemPath>
+      <itemPath>../canBus.X/can_register.h</itemPath>
+      <itemPath>../canBus.X/spi.h</itemPath>
+      <itemPath>../canBus.X/lcd/ssd1963_cmd.h</itemPath>
+      <itemPath>../canBus.X/lcd/lcd.h</itemPath>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"
@@ -12,23 +18,18 @@
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
                    projectFiles="true">
+      <itemPath>../canBus.X/can.c</itemPath>
+      <itemPath>../canBus.X/conf_bits.c</itemPath>
+      <itemPath>../canBus.X/lcd/lcd.c</itemPath>
+      <itemPath>../canBus.X/main.c</itemPath>
+      <itemPath>../canBus.X/spi.c</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
                    projectFiles="false">
       <itemPath>Makefile</itemPath>
+      <itemPath>canBus_JCHS.mc3</itemPath>
     </logicalFolder>
-    <itemPath>../canBus.X/lcd/lcd.c</itemPath>
-    <itemPath>../canBus.X/lcd/lcd.h</itemPath>
-    <itemPath>../canBus.X/lcd/ssd1963_cmd.h</itemPath>
-    <itemPath>../canBus.X/can.c</itemPath>
-    <itemPath>../canBus.X/can.h</itemPath>
-    <itemPath>../canBus.X/can_defines.h</itemPath>
-    <itemPath>../canBus.X/can_register.h</itemPath>
-    <itemPath>../canBus.X/conf_bits.c</itemPath>
-    <itemPath>../canBus.X/main.c</itemPath>
-    <itemPath>../canBus.X/spi.c</itemPath>
-    <itemPath>../canBus.X/spi.h</itemPath>
   </logicalFolder>
   <sourceRootList>
     <Elem>../canBus.X</Elem>
