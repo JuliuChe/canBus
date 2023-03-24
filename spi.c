@@ -19,7 +19,7 @@
   // ---------------------------------------------------------------------------
 
 #include <xc.h>
-
+#include "mcc_generated_files/pin_manager.h"
 #include <stdint.h>
 
 volatile uint8_t * ptrCS_SPI;
@@ -27,7 +27,7 @@ uint8_t csBitNr;
 
 uint8_t  mikroNr=0;
 int8_t SpiInit(uint8_t mikroBusNr)
-{
+{/*
   if((mikroBusNr > 5) | (mikroBusNr < 1))
     return -1;
   mikroNr = mikroBusNr;
@@ -103,35 +103,27 @@ int8_t SpiInit(uint8_t mikroBusNr)
     SSP1CON1bits.CKP = 0;         // clock is active high
     SSP1CON1bits.SSPEN = 1;       // enable serial port
     SSP1CON1bits.SSPM = 0b0000;   // SPI clock is 4MHz (Fosc/16)
-  }
+  }*/
   return 0;
 }
 
 int8_t SpiTransfer(uint8_t * txPtr, uint8_t * rxPtr, uint16_t size)
 {
   volatile uint8_t dummy;
-  *ptrCS_SPI &= ~(1 << csBitNr);                     // activate chip select
+  //*ptrCS_SPI = 
+  nCS_SetLow() ;                     // activate chip select
   while(size > 0)
   {
-    if(mikroNr < 4)               // MSSP2 is used
-    {
       //SSP2STATbits.BF = 0;        // clear transfer flag
       dummy = SSP2BUF;
       SSP2BUF = *txPtr;           // send data
       while(SSP2STATbits.BF == 0){}
       *rxPtr = SSP2BUF;           // get received data
-    }
-    else                          // MSSP1 is used
-    {
-      SSP2STATbits.BF = 0;         // clear transfer flag
-      SSP1BUF = *txPtr;           // send data
-      while(SSP1STATbits.BF == 0){}
-      *rxPtr = SSP1BUF;           // get received data
-    }
     txPtr++;                      // increment tx pointer
     rxPtr++;                      // increment rx pointer
     size--;                       // decrement bytes counter
   };
-  *ptrCS_SPI |= (1 << csBitNr);                     // deactivate chip select
+  //*ptrCS_SPI = 
+ nCS_SetHigh();                     // deactivate chip select
   return 0;
 }
