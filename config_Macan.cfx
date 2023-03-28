@@ -9,7 +9,7 @@
     <IsLogFilterLINEnabled>FALSE</IsLogFilterLINEnabled>
     <IsLoggingEnabled>FALSE</IsLoggingEnabled>
     <IsMsgIntepretationEnabled>FALSE</IsMsgIntepretationEnabled>
-    <IsOverWriteEnabled>TRUE</IsOverWriteEnabled>
+    <IsOverWriteEnabled>FALSE</IsOverWriteEnabled>
     <DisplayTimeMode>SYSTEM</DisplayTimeMode>
     <DisplayNumericMode>FALSE</DisplayNumericMode>
     <LogOnConnect_CAN>FALSE</LogOnConnect_CAN>
@@ -25,19 +25,21 @@
     </Window_Position>
   </Global_Configuration>
   <Module_Configuration>
-    <CAN_Database_Files/>
+    <CAN_Database_Files>
+      <FilePath>porscheMacan_Signals_#3.DBF</FilePath>
+    </CAN_Database_Files>
     <J1939_Database_Files/>
     <CAN_DIL_Section>
-      <DriverName>Simulation</DriverName>
-      <ControllerMode>Bus Off</ControllerMode>
+      <DriverName>MHS Tiny-CAN</DriverName>
+      <ControllerMode>Unknown</ControllerMode>
       <ControllerSettings>
         <Channel>
-          <BaudRate>500</BaudRate>
+          <BaudRate>250</BaudRate>
           <CNF1>7</CNF1>
           <CNF2>B8</CNF2>
           <CNF3>5</CNF3>
-          <BTR0>C0</BTR0>
-          <BTR1>3A</BTR1>
+          <BTR0>00</BTR0>
+          <BTR1>1C</BTR1>
           <Clock>16</Clock>
           <SamplePerc>75</SamplePerc>
           <Sampling>1</Sampling>
@@ -61,759 +63,9 @@
           <AccMaskByte3_1>FF</AccMaskByte3_1>
           <AccMaskByte4_0>FF</AccMaskByte4_0>
           <AccMaskByte4_1>FF</AccMaskByte4_1>
-          <HardwareDesc>Simulation</HardwareDesc>
+          <HardwareDesc>Tiny-CAN I-XL (Snr:01002756)</HardwareDesc>
           <ItemUnderFocus>64</ItemUnderFocus>
-          <BTR0BTR1>49210</BTR0BTR1>
-          <AccFilterMode>0</AccFilterMode>
-          <ControllerMode>1</ControllerMode>
-          <SelfReception>1</SelfReception>
-          <HWFilterType_0>0</HWFilterType_0>
-          <HWFilterType_1>0</HWFilterType_1>
-          <Debug>0</Debug>
-          <PassiveMode>0</PassiveMode>
-          <HWTimestamps>0</HWTimestamps>
-          <Location/>
-          <LowSpeed>0</LowSpeed>
-          <CANFD_BaudRate>2000000</CANFD_BaudRate>
-          <CANFD_SamplePoint>70</CANFD_SamplePoint>
-          <CANFD_BTLCycles>10</CANFD_BTLCycles>
-          <CANFD_SJW>3</CANFD_SJW>
-          <CANFD_TxDelayCompensation>0</CANFD_TxDelayCompensation>
-          <CANFD_TxSecondarySamplePoint>0</CANFD_TxSecondarySamplePoint>
-        </Channel>
-        <Channel>
-          <BaudRate>500</BaudRate>
-          <CNF1>7</CNF1>
-          <CNF2>B8</CNF2>
-          <CNF3>5</CNF3>
-          <BTR0>C0</BTR0>
-          <BTR1>3A</BTR1>
-          <Clock>16</Clock>
-          <SamplePerc>75</SamplePerc>
-          <Sampling>1</Sampling>
-          <BTLCycles>10</BTLCycles>
-          <Warning_Limit>96</Warning_Limit>
-          <Propagation_Delay>ALL</Propagation_Delay>
-          <SJW>4</SJW>
-          <AccCodeByte1_0>0</AccCodeByte1_0>
-          <AccCodeByte1_1>0</AccCodeByte1_1>
-          <AccCodeByte2_0>0</AccCodeByte2_0>
-          <AccCodeByte2_1>0</AccCodeByte2_1>
-          <AccCodeByte3_0>0</AccCodeByte3_0>
-          <AccCodeByte3_1>0</AccCodeByte3_1>
-          <AccCodeByte4_0>0</AccCodeByte4_0>
-          <AccCodeByte4_1>0</AccCodeByte4_1>
-          <AccMaskByte1_0>FF</AccMaskByte1_0>
-          <AccMaskByte1_1>FF</AccMaskByte1_1>
-          <AccMaskByte2_0>FF</AccMaskByte2_0>
-          <AccMaskByte2_1>FF</AccMaskByte2_1>
-          <AccMaskByte3_0>FF</AccMaskByte3_0>
-          <AccMaskByte3_1>FF</AccMaskByte3_1>
-          <AccMaskByte4_0>FF</AccMaskByte4_0>
-          <AccMaskByte4_1>FF</AccMaskByte4_1>
-          <HardwareDesc>Simulation</HardwareDesc>
-          <ItemUnderFocus>64</ItemUnderFocus>
-          <BTR0BTR1>49210</BTR0BTR1>
-          <AccFilterMode>0</AccFilterMode>
-          <ControllerMode>1</ControllerMode>
-          <SelfReception>1</SelfReception>
-          <HWFilterType_0>0</HWFilterType_0>
-          <HWFilterType_1>0</HWFilterType_1>
-          <Debug>0</Debug>
-          <PassiveMode>0</PassiveMode>
-          <HWTimestamps>0</HWTimestamps>
-          <Location/>
-          <LowSpeed>0</LowSpeed>
-          <CANFD_BaudRate>2000000</CANFD_BaudRate>
-          <CANFD_SamplePoint>70</CANFD_SamplePoint>
-          <CANFD_BTLCycles>10</CANFD_BTLCycles>
-          <CANFD_SJW>3</CANFD_SJW>
-          <CANFD_TxDelayCompensation>0</CANFD_TxDelayCompensation>
-          <CANFD_TxSecondarySamplePoint>0</CANFD_TxSecondarySamplePoint>
-        </Channel>
-        <Channel>
-          <BaudRate>500</BaudRate>
-          <CNF1>7</CNF1>
-          <CNF2>B8</CNF2>
-          <CNF3>5</CNF3>
-          <BTR0>C0</BTR0>
-          <BTR1>3A</BTR1>
-          <Clock>16</Clock>
-          <SamplePerc>75</SamplePerc>
-          <Sampling>1</Sampling>
-          <BTLCycles>10</BTLCycles>
-          <Warning_Limit>96</Warning_Limit>
-          <Propagation_Delay>ALL</Propagation_Delay>
-          <SJW>4</SJW>
-          <AccCodeByte1_0>0</AccCodeByte1_0>
-          <AccCodeByte1_1>0</AccCodeByte1_1>
-          <AccCodeByte2_0>0</AccCodeByte2_0>
-          <AccCodeByte2_1>0</AccCodeByte2_1>
-          <AccCodeByte3_0>0</AccCodeByte3_0>
-          <AccCodeByte3_1>0</AccCodeByte3_1>
-          <AccCodeByte4_0>0</AccCodeByte4_0>
-          <AccCodeByte4_1>0</AccCodeByte4_1>
-          <AccMaskByte1_0>FF</AccMaskByte1_0>
-          <AccMaskByte1_1>FF</AccMaskByte1_1>
-          <AccMaskByte2_0>FF</AccMaskByte2_0>
-          <AccMaskByte2_1>FF</AccMaskByte2_1>
-          <AccMaskByte3_0>FF</AccMaskByte3_0>
-          <AccMaskByte3_1>FF</AccMaskByte3_1>
-          <AccMaskByte4_0>FF</AccMaskByte4_0>
-          <AccMaskByte4_1>FF</AccMaskByte4_1>
-          <HardwareDesc>Simulation</HardwareDesc>
-          <ItemUnderFocus>64</ItemUnderFocus>
-          <BTR0BTR1>49210</BTR0BTR1>
-          <AccFilterMode>0</AccFilterMode>
-          <ControllerMode>1</ControllerMode>
-          <SelfReception>1</SelfReception>
-          <HWFilterType_0>0</HWFilterType_0>
-          <HWFilterType_1>0</HWFilterType_1>
-          <Debug>0</Debug>
-          <PassiveMode>0</PassiveMode>
-          <HWTimestamps>0</HWTimestamps>
-          <Location/>
-          <LowSpeed>0</LowSpeed>
-          <CANFD_BaudRate>2000000</CANFD_BaudRate>
-          <CANFD_SamplePoint>70</CANFD_SamplePoint>
-          <CANFD_BTLCycles>10</CANFD_BTLCycles>
-          <CANFD_SJW>3</CANFD_SJW>
-          <CANFD_TxDelayCompensation>0</CANFD_TxDelayCompensation>
-          <CANFD_TxSecondarySamplePoint>0</CANFD_TxSecondarySamplePoint>
-        </Channel>
-        <Channel>
-          <BaudRate>500</BaudRate>
-          <CNF1>7</CNF1>
-          <CNF2>B8</CNF2>
-          <CNF3>5</CNF3>
-          <BTR0>C0</BTR0>
-          <BTR1>3A</BTR1>
-          <Clock>16</Clock>
-          <SamplePerc>75</SamplePerc>
-          <Sampling>1</Sampling>
-          <BTLCycles>10</BTLCycles>
-          <Warning_Limit>96</Warning_Limit>
-          <Propagation_Delay>ALL</Propagation_Delay>
-          <SJW>4</SJW>
-          <AccCodeByte1_0>0</AccCodeByte1_0>
-          <AccCodeByte1_1>0</AccCodeByte1_1>
-          <AccCodeByte2_0>0</AccCodeByte2_0>
-          <AccCodeByte2_1>0</AccCodeByte2_1>
-          <AccCodeByte3_0>0</AccCodeByte3_0>
-          <AccCodeByte3_1>0</AccCodeByte3_1>
-          <AccCodeByte4_0>0</AccCodeByte4_0>
-          <AccCodeByte4_1>0</AccCodeByte4_1>
-          <AccMaskByte1_0>FF</AccMaskByte1_0>
-          <AccMaskByte1_1>FF</AccMaskByte1_1>
-          <AccMaskByte2_0>FF</AccMaskByte2_0>
-          <AccMaskByte2_1>FF</AccMaskByte2_1>
-          <AccMaskByte3_0>FF</AccMaskByte3_0>
-          <AccMaskByte3_1>FF</AccMaskByte3_1>
-          <AccMaskByte4_0>FF</AccMaskByte4_0>
-          <AccMaskByte4_1>FF</AccMaskByte4_1>
-          <HardwareDesc>Simulation</HardwareDesc>
-          <ItemUnderFocus>64</ItemUnderFocus>
-          <BTR0BTR1>49210</BTR0BTR1>
-          <AccFilterMode>0</AccFilterMode>
-          <ControllerMode>1</ControllerMode>
-          <SelfReception>1</SelfReception>
-          <HWFilterType_0>0</HWFilterType_0>
-          <HWFilterType_1>0</HWFilterType_1>
-          <Debug>0</Debug>
-          <PassiveMode>0</PassiveMode>
-          <HWTimestamps>0</HWTimestamps>
-          <Location/>
-          <LowSpeed>0</LowSpeed>
-          <CANFD_BaudRate>2000000</CANFD_BaudRate>
-          <CANFD_SamplePoint>70</CANFD_SamplePoint>
-          <CANFD_BTLCycles>10</CANFD_BTLCycles>
-          <CANFD_SJW>3</CANFD_SJW>
-          <CANFD_TxDelayCompensation>0</CANFD_TxDelayCompensation>
-          <CANFD_TxSecondarySamplePoint>0</CANFD_TxSecondarySamplePoint>
-        </Channel>
-        <Channel>
-          <BaudRate>500</BaudRate>
-          <CNF1>7</CNF1>
-          <CNF2>B8</CNF2>
-          <CNF3>5</CNF3>
-          <BTR0>C0</BTR0>
-          <BTR1>3A</BTR1>
-          <Clock>16</Clock>
-          <SamplePerc>75</SamplePerc>
-          <Sampling>1</Sampling>
-          <BTLCycles>10</BTLCycles>
-          <Warning_Limit>96</Warning_Limit>
-          <Propagation_Delay>ALL</Propagation_Delay>
-          <SJW>4</SJW>
-          <AccCodeByte1_0>0</AccCodeByte1_0>
-          <AccCodeByte1_1>0</AccCodeByte1_1>
-          <AccCodeByte2_0>0</AccCodeByte2_0>
-          <AccCodeByte2_1>0</AccCodeByte2_1>
-          <AccCodeByte3_0>0</AccCodeByte3_0>
-          <AccCodeByte3_1>0</AccCodeByte3_1>
-          <AccCodeByte4_0>0</AccCodeByte4_0>
-          <AccCodeByte4_1>0</AccCodeByte4_1>
-          <AccMaskByte1_0>FF</AccMaskByte1_0>
-          <AccMaskByte1_1>FF</AccMaskByte1_1>
-          <AccMaskByte2_0>FF</AccMaskByte2_0>
-          <AccMaskByte2_1>FF</AccMaskByte2_1>
-          <AccMaskByte3_0>FF</AccMaskByte3_0>
-          <AccMaskByte3_1>FF</AccMaskByte3_1>
-          <AccMaskByte4_0>FF</AccMaskByte4_0>
-          <AccMaskByte4_1>FF</AccMaskByte4_1>
-          <HardwareDesc>Simulation</HardwareDesc>
-          <ItemUnderFocus>64</ItemUnderFocus>
-          <BTR0BTR1>49210</BTR0BTR1>
-          <AccFilterMode>0</AccFilterMode>
-          <ControllerMode>1</ControllerMode>
-          <SelfReception>1</SelfReception>
-          <HWFilterType_0>0</HWFilterType_0>
-          <HWFilterType_1>0</HWFilterType_1>
-          <Debug>0</Debug>
-          <PassiveMode>0</PassiveMode>
-          <HWTimestamps>0</HWTimestamps>
-          <Location/>
-          <LowSpeed>0</LowSpeed>
-          <CANFD_BaudRate>2000000</CANFD_BaudRate>
-          <CANFD_SamplePoint>70</CANFD_SamplePoint>
-          <CANFD_BTLCycles>10</CANFD_BTLCycles>
-          <CANFD_SJW>3</CANFD_SJW>
-          <CANFD_TxDelayCompensation>0</CANFD_TxDelayCompensation>
-          <CANFD_TxSecondarySamplePoint>0</CANFD_TxSecondarySamplePoint>
-        </Channel>
-        <Channel>
-          <BaudRate>500</BaudRate>
-          <CNF1>7</CNF1>
-          <CNF2>B8</CNF2>
-          <CNF3>5</CNF3>
-          <BTR0>C0</BTR0>
-          <BTR1>3A</BTR1>
-          <Clock>16</Clock>
-          <SamplePerc>75</SamplePerc>
-          <Sampling>1</Sampling>
-          <BTLCycles>10</BTLCycles>
-          <Warning_Limit>96</Warning_Limit>
-          <Propagation_Delay>ALL</Propagation_Delay>
-          <SJW>4</SJW>
-          <AccCodeByte1_0>0</AccCodeByte1_0>
-          <AccCodeByte1_1>0</AccCodeByte1_1>
-          <AccCodeByte2_0>0</AccCodeByte2_0>
-          <AccCodeByte2_1>0</AccCodeByte2_1>
-          <AccCodeByte3_0>0</AccCodeByte3_0>
-          <AccCodeByte3_1>0</AccCodeByte3_1>
-          <AccCodeByte4_0>0</AccCodeByte4_0>
-          <AccCodeByte4_1>0</AccCodeByte4_1>
-          <AccMaskByte1_0>FF</AccMaskByte1_0>
-          <AccMaskByte1_1>FF</AccMaskByte1_1>
-          <AccMaskByte2_0>FF</AccMaskByte2_0>
-          <AccMaskByte2_1>FF</AccMaskByte2_1>
-          <AccMaskByte3_0>FF</AccMaskByte3_0>
-          <AccMaskByte3_1>FF</AccMaskByte3_1>
-          <AccMaskByte4_0>FF</AccMaskByte4_0>
-          <AccMaskByte4_1>FF</AccMaskByte4_1>
-          <HardwareDesc>Simulation</HardwareDesc>
-          <ItemUnderFocus>64</ItemUnderFocus>
-          <BTR0BTR1>49210</BTR0BTR1>
-          <AccFilterMode>0</AccFilterMode>
-          <ControllerMode>1</ControllerMode>
-          <SelfReception>1</SelfReception>
-          <HWFilterType_0>0</HWFilterType_0>
-          <HWFilterType_1>0</HWFilterType_1>
-          <Debug>0</Debug>
-          <PassiveMode>0</PassiveMode>
-          <HWTimestamps>0</HWTimestamps>
-          <Location/>
-          <LowSpeed>0</LowSpeed>
-          <CANFD_BaudRate>2000000</CANFD_BaudRate>
-          <CANFD_SamplePoint>70</CANFD_SamplePoint>
-          <CANFD_BTLCycles>10</CANFD_BTLCycles>
-          <CANFD_SJW>3</CANFD_SJW>
-          <CANFD_TxDelayCompensation>0</CANFD_TxDelayCompensation>
-          <CANFD_TxSecondarySamplePoint>0</CANFD_TxSecondarySamplePoint>
-        </Channel>
-        <Channel>
-          <BaudRate>500</BaudRate>
-          <CNF1>7</CNF1>
-          <CNF2>B8</CNF2>
-          <CNF3>5</CNF3>
-          <BTR0>C0</BTR0>
-          <BTR1>3A</BTR1>
-          <Clock>16</Clock>
-          <SamplePerc>75</SamplePerc>
-          <Sampling>1</Sampling>
-          <BTLCycles>10</BTLCycles>
-          <Warning_Limit>96</Warning_Limit>
-          <Propagation_Delay>ALL</Propagation_Delay>
-          <SJW>4</SJW>
-          <AccCodeByte1_0>0</AccCodeByte1_0>
-          <AccCodeByte1_1>0</AccCodeByte1_1>
-          <AccCodeByte2_0>0</AccCodeByte2_0>
-          <AccCodeByte2_1>0</AccCodeByte2_1>
-          <AccCodeByte3_0>0</AccCodeByte3_0>
-          <AccCodeByte3_1>0</AccCodeByte3_1>
-          <AccCodeByte4_0>0</AccCodeByte4_0>
-          <AccCodeByte4_1>0</AccCodeByte4_1>
-          <AccMaskByte1_0>FF</AccMaskByte1_0>
-          <AccMaskByte1_1>FF</AccMaskByte1_1>
-          <AccMaskByte2_0>FF</AccMaskByte2_0>
-          <AccMaskByte2_1>FF</AccMaskByte2_1>
-          <AccMaskByte3_0>FF</AccMaskByte3_0>
-          <AccMaskByte3_1>FF</AccMaskByte3_1>
-          <AccMaskByte4_0>FF</AccMaskByte4_0>
-          <AccMaskByte4_1>FF</AccMaskByte4_1>
-          <HardwareDesc>Simulation</HardwareDesc>
-          <ItemUnderFocus>64</ItemUnderFocus>
-          <BTR0BTR1>49210</BTR0BTR1>
-          <AccFilterMode>0</AccFilterMode>
-          <ControllerMode>1</ControllerMode>
-          <SelfReception>1</SelfReception>
-          <HWFilterType_0>0</HWFilterType_0>
-          <HWFilterType_1>0</HWFilterType_1>
-          <Debug>0</Debug>
-          <PassiveMode>0</PassiveMode>
-          <HWTimestamps>0</HWTimestamps>
-          <Location/>
-          <LowSpeed>0</LowSpeed>
-          <CANFD_BaudRate>2000000</CANFD_BaudRate>
-          <CANFD_SamplePoint>70</CANFD_SamplePoint>
-          <CANFD_BTLCycles>10</CANFD_BTLCycles>
-          <CANFD_SJW>3</CANFD_SJW>
-          <CANFD_TxDelayCompensation>0</CANFD_TxDelayCompensation>
-          <CANFD_TxSecondarySamplePoint>0</CANFD_TxSecondarySamplePoint>
-        </Channel>
-        <Channel>
-          <BaudRate>500</BaudRate>
-          <CNF1>7</CNF1>
-          <CNF2>B8</CNF2>
-          <CNF3>5</CNF3>
-          <BTR0>C0</BTR0>
-          <BTR1>3A</BTR1>
-          <Clock>16</Clock>
-          <SamplePerc>75</SamplePerc>
-          <Sampling>1</Sampling>
-          <BTLCycles>10</BTLCycles>
-          <Warning_Limit>96</Warning_Limit>
-          <Propagation_Delay>ALL</Propagation_Delay>
-          <SJW>4</SJW>
-          <AccCodeByte1_0>0</AccCodeByte1_0>
-          <AccCodeByte1_1>0</AccCodeByte1_1>
-          <AccCodeByte2_0>0</AccCodeByte2_0>
-          <AccCodeByte2_1>0</AccCodeByte2_1>
-          <AccCodeByte3_0>0</AccCodeByte3_0>
-          <AccCodeByte3_1>0</AccCodeByte3_1>
-          <AccCodeByte4_0>0</AccCodeByte4_0>
-          <AccCodeByte4_1>0</AccCodeByte4_1>
-          <AccMaskByte1_0>FF</AccMaskByte1_0>
-          <AccMaskByte1_1>FF</AccMaskByte1_1>
-          <AccMaskByte2_0>FF</AccMaskByte2_0>
-          <AccMaskByte2_1>FF</AccMaskByte2_1>
-          <AccMaskByte3_0>FF</AccMaskByte3_0>
-          <AccMaskByte3_1>FF</AccMaskByte3_1>
-          <AccMaskByte4_0>FF</AccMaskByte4_0>
-          <AccMaskByte4_1>FF</AccMaskByte4_1>
-          <HardwareDesc>Simulation</HardwareDesc>
-          <ItemUnderFocus>64</ItemUnderFocus>
-          <BTR0BTR1>49210</BTR0BTR1>
-          <AccFilterMode>0</AccFilterMode>
-          <ControllerMode>1</ControllerMode>
-          <SelfReception>1</SelfReception>
-          <HWFilterType_0>0</HWFilterType_0>
-          <HWFilterType_1>0</HWFilterType_1>
-          <Debug>0</Debug>
-          <PassiveMode>0</PassiveMode>
-          <HWTimestamps>0</HWTimestamps>
-          <Location/>
-          <LowSpeed>0</LowSpeed>
-          <CANFD_BaudRate>2000000</CANFD_BaudRate>
-          <CANFD_SamplePoint>70</CANFD_SamplePoint>
-          <CANFD_BTLCycles>10</CANFD_BTLCycles>
-          <CANFD_SJW>3</CANFD_SJW>
-          <CANFD_TxDelayCompensation>0</CANFD_TxDelayCompensation>
-          <CANFD_TxSecondarySamplePoint>0</CANFD_TxSecondarySamplePoint>
-        </Channel>
-        <Channel>
-          <BaudRate>500</BaudRate>
-          <CNF1>7</CNF1>
-          <CNF2>B8</CNF2>
-          <CNF3>5</CNF3>
-          <BTR0>C0</BTR0>
-          <BTR1>3A</BTR1>
-          <Clock>16</Clock>
-          <SamplePerc>75</SamplePerc>
-          <Sampling>1</Sampling>
-          <BTLCycles>10</BTLCycles>
-          <Warning_Limit>96</Warning_Limit>
-          <Propagation_Delay>ALL</Propagation_Delay>
-          <SJW>4</SJW>
-          <AccCodeByte1_0>0</AccCodeByte1_0>
-          <AccCodeByte1_1>0</AccCodeByte1_1>
-          <AccCodeByte2_0>0</AccCodeByte2_0>
-          <AccCodeByte2_1>0</AccCodeByte2_1>
-          <AccCodeByte3_0>0</AccCodeByte3_0>
-          <AccCodeByte3_1>0</AccCodeByte3_1>
-          <AccCodeByte4_0>0</AccCodeByte4_0>
-          <AccCodeByte4_1>0</AccCodeByte4_1>
-          <AccMaskByte1_0>FF</AccMaskByte1_0>
-          <AccMaskByte1_1>FF</AccMaskByte1_1>
-          <AccMaskByte2_0>FF</AccMaskByte2_0>
-          <AccMaskByte2_1>FF</AccMaskByte2_1>
-          <AccMaskByte3_0>FF</AccMaskByte3_0>
-          <AccMaskByte3_1>FF</AccMaskByte3_1>
-          <AccMaskByte4_0>FF</AccMaskByte4_0>
-          <AccMaskByte4_1>FF</AccMaskByte4_1>
-          <HardwareDesc>Simulation</HardwareDesc>
-          <ItemUnderFocus>64</ItemUnderFocus>
-          <BTR0BTR1>49210</BTR0BTR1>
-          <AccFilterMode>0</AccFilterMode>
-          <ControllerMode>1</ControllerMode>
-          <SelfReception>1</SelfReception>
-          <HWFilterType_0>0</HWFilterType_0>
-          <HWFilterType_1>0</HWFilterType_1>
-          <Debug>0</Debug>
-          <PassiveMode>0</PassiveMode>
-          <HWTimestamps>0</HWTimestamps>
-          <Location/>
-          <LowSpeed>0</LowSpeed>
-          <CANFD_BaudRate>2000000</CANFD_BaudRate>
-          <CANFD_SamplePoint>70</CANFD_SamplePoint>
-          <CANFD_BTLCycles>10</CANFD_BTLCycles>
-          <CANFD_SJW>3</CANFD_SJW>
-          <CANFD_TxDelayCompensation>0</CANFD_TxDelayCompensation>
-          <CANFD_TxSecondarySamplePoint>0</CANFD_TxSecondarySamplePoint>
-        </Channel>
-        <Channel>
-          <BaudRate>500</BaudRate>
-          <CNF1>7</CNF1>
-          <CNF2>B8</CNF2>
-          <CNF3>5</CNF3>
-          <BTR0>C0</BTR0>
-          <BTR1>3A</BTR1>
-          <Clock>16</Clock>
-          <SamplePerc>75</SamplePerc>
-          <Sampling>1</Sampling>
-          <BTLCycles>10</BTLCycles>
-          <Warning_Limit>96</Warning_Limit>
-          <Propagation_Delay>ALL</Propagation_Delay>
-          <SJW>4</SJW>
-          <AccCodeByte1_0>0</AccCodeByte1_0>
-          <AccCodeByte1_1>0</AccCodeByte1_1>
-          <AccCodeByte2_0>0</AccCodeByte2_0>
-          <AccCodeByte2_1>0</AccCodeByte2_1>
-          <AccCodeByte3_0>0</AccCodeByte3_0>
-          <AccCodeByte3_1>0</AccCodeByte3_1>
-          <AccCodeByte4_0>0</AccCodeByte4_0>
-          <AccCodeByte4_1>0</AccCodeByte4_1>
-          <AccMaskByte1_0>FF</AccMaskByte1_0>
-          <AccMaskByte1_1>FF</AccMaskByte1_1>
-          <AccMaskByte2_0>FF</AccMaskByte2_0>
-          <AccMaskByte2_1>FF</AccMaskByte2_1>
-          <AccMaskByte3_0>FF</AccMaskByte3_0>
-          <AccMaskByte3_1>FF</AccMaskByte3_1>
-          <AccMaskByte4_0>FF</AccMaskByte4_0>
-          <AccMaskByte4_1>FF</AccMaskByte4_1>
-          <HardwareDesc>Simulation</HardwareDesc>
-          <ItemUnderFocus>64</ItemUnderFocus>
-          <BTR0BTR1>49210</BTR0BTR1>
-          <AccFilterMode>0</AccFilterMode>
-          <ControllerMode>1</ControllerMode>
-          <SelfReception>1</SelfReception>
-          <HWFilterType_0>0</HWFilterType_0>
-          <HWFilterType_1>0</HWFilterType_1>
-          <Debug>0</Debug>
-          <PassiveMode>0</PassiveMode>
-          <HWTimestamps>0</HWTimestamps>
-          <Location/>
-          <LowSpeed>0</LowSpeed>
-          <CANFD_BaudRate>2000000</CANFD_BaudRate>
-          <CANFD_SamplePoint>70</CANFD_SamplePoint>
-          <CANFD_BTLCycles>10</CANFD_BTLCycles>
-          <CANFD_SJW>3</CANFD_SJW>
-          <CANFD_TxDelayCompensation>0</CANFD_TxDelayCompensation>
-          <CANFD_TxSecondarySamplePoint>0</CANFD_TxSecondarySamplePoint>
-        </Channel>
-        <Channel>
-          <BaudRate>500</BaudRate>
-          <CNF1>7</CNF1>
-          <CNF2>B8</CNF2>
-          <CNF3>5</CNF3>
-          <BTR0>C0</BTR0>
-          <BTR1>3A</BTR1>
-          <Clock>16</Clock>
-          <SamplePerc>75</SamplePerc>
-          <Sampling>1</Sampling>
-          <BTLCycles>10</BTLCycles>
-          <Warning_Limit>96</Warning_Limit>
-          <Propagation_Delay>ALL</Propagation_Delay>
-          <SJW>4</SJW>
-          <AccCodeByte1_0>0</AccCodeByte1_0>
-          <AccCodeByte1_1>0</AccCodeByte1_1>
-          <AccCodeByte2_0>0</AccCodeByte2_0>
-          <AccCodeByte2_1>0</AccCodeByte2_1>
-          <AccCodeByte3_0>0</AccCodeByte3_0>
-          <AccCodeByte3_1>0</AccCodeByte3_1>
-          <AccCodeByte4_0>0</AccCodeByte4_0>
-          <AccCodeByte4_1>0</AccCodeByte4_1>
-          <AccMaskByte1_0>FF</AccMaskByte1_0>
-          <AccMaskByte1_1>FF</AccMaskByte1_1>
-          <AccMaskByte2_0>FF</AccMaskByte2_0>
-          <AccMaskByte2_1>FF</AccMaskByte2_1>
-          <AccMaskByte3_0>FF</AccMaskByte3_0>
-          <AccMaskByte3_1>FF</AccMaskByte3_1>
-          <AccMaskByte4_0>FF</AccMaskByte4_0>
-          <AccMaskByte4_1>FF</AccMaskByte4_1>
-          <HardwareDesc>Simulation</HardwareDesc>
-          <ItemUnderFocus>64</ItemUnderFocus>
-          <BTR0BTR1>49210</BTR0BTR1>
-          <AccFilterMode>0</AccFilterMode>
-          <ControllerMode>1</ControllerMode>
-          <SelfReception>1</SelfReception>
-          <HWFilterType_0>0</HWFilterType_0>
-          <HWFilterType_1>0</HWFilterType_1>
-          <Debug>0</Debug>
-          <PassiveMode>0</PassiveMode>
-          <HWTimestamps>0</HWTimestamps>
-          <Location/>
-          <LowSpeed>0</LowSpeed>
-          <CANFD_BaudRate>2000000</CANFD_BaudRate>
-          <CANFD_SamplePoint>70</CANFD_SamplePoint>
-          <CANFD_BTLCycles>10</CANFD_BTLCycles>
-          <CANFD_SJW>3</CANFD_SJW>
-          <CANFD_TxDelayCompensation>0</CANFD_TxDelayCompensation>
-          <CANFD_TxSecondarySamplePoint>0</CANFD_TxSecondarySamplePoint>
-        </Channel>
-        <Channel>
-          <BaudRate>500</BaudRate>
-          <CNF1>7</CNF1>
-          <CNF2>B8</CNF2>
-          <CNF3>5</CNF3>
-          <BTR0>C0</BTR0>
-          <BTR1>3A</BTR1>
-          <Clock>16</Clock>
-          <SamplePerc>75</SamplePerc>
-          <Sampling>1</Sampling>
-          <BTLCycles>10</BTLCycles>
-          <Warning_Limit>96</Warning_Limit>
-          <Propagation_Delay>ALL</Propagation_Delay>
-          <SJW>4</SJW>
-          <AccCodeByte1_0>0</AccCodeByte1_0>
-          <AccCodeByte1_1>0</AccCodeByte1_1>
-          <AccCodeByte2_0>0</AccCodeByte2_0>
-          <AccCodeByte2_1>0</AccCodeByte2_1>
-          <AccCodeByte3_0>0</AccCodeByte3_0>
-          <AccCodeByte3_1>0</AccCodeByte3_1>
-          <AccCodeByte4_0>0</AccCodeByte4_0>
-          <AccCodeByte4_1>0</AccCodeByte4_1>
-          <AccMaskByte1_0>FF</AccMaskByte1_0>
-          <AccMaskByte1_1>FF</AccMaskByte1_1>
-          <AccMaskByte2_0>FF</AccMaskByte2_0>
-          <AccMaskByte2_1>FF</AccMaskByte2_1>
-          <AccMaskByte3_0>FF</AccMaskByte3_0>
-          <AccMaskByte3_1>FF</AccMaskByte3_1>
-          <AccMaskByte4_0>FF</AccMaskByte4_0>
-          <AccMaskByte4_1>FF</AccMaskByte4_1>
-          <HardwareDesc>Simulation</HardwareDesc>
-          <ItemUnderFocus>64</ItemUnderFocus>
-          <BTR0BTR1>49210</BTR0BTR1>
-          <AccFilterMode>0</AccFilterMode>
-          <ControllerMode>1</ControllerMode>
-          <SelfReception>1</SelfReception>
-          <HWFilterType_0>0</HWFilterType_0>
-          <HWFilterType_1>0</HWFilterType_1>
-          <Debug>0</Debug>
-          <PassiveMode>0</PassiveMode>
-          <HWTimestamps>0</HWTimestamps>
-          <Location/>
-          <LowSpeed>0</LowSpeed>
-          <CANFD_BaudRate>2000000</CANFD_BaudRate>
-          <CANFD_SamplePoint>70</CANFD_SamplePoint>
-          <CANFD_BTLCycles>10</CANFD_BTLCycles>
-          <CANFD_SJW>3</CANFD_SJW>
-          <CANFD_TxDelayCompensation>0</CANFD_TxDelayCompensation>
-          <CANFD_TxSecondarySamplePoint>0</CANFD_TxSecondarySamplePoint>
-        </Channel>
-        <Channel>
-          <BaudRate>500</BaudRate>
-          <CNF1>7</CNF1>
-          <CNF2>B8</CNF2>
-          <CNF3>5</CNF3>
-          <BTR0>C0</BTR0>
-          <BTR1>3A</BTR1>
-          <Clock>16</Clock>
-          <SamplePerc>75</SamplePerc>
-          <Sampling>1</Sampling>
-          <BTLCycles>10</BTLCycles>
-          <Warning_Limit>96</Warning_Limit>
-          <Propagation_Delay>ALL</Propagation_Delay>
-          <SJW>4</SJW>
-          <AccCodeByte1_0>0</AccCodeByte1_0>
-          <AccCodeByte1_1>0</AccCodeByte1_1>
-          <AccCodeByte2_0>0</AccCodeByte2_0>
-          <AccCodeByte2_1>0</AccCodeByte2_1>
-          <AccCodeByte3_0>0</AccCodeByte3_0>
-          <AccCodeByte3_1>0</AccCodeByte3_1>
-          <AccCodeByte4_0>0</AccCodeByte4_0>
-          <AccCodeByte4_1>0</AccCodeByte4_1>
-          <AccMaskByte1_0>FF</AccMaskByte1_0>
-          <AccMaskByte1_1>FF</AccMaskByte1_1>
-          <AccMaskByte2_0>FF</AccMaskByte2_0>
-          <AccMaskByte2_1>FF</AccMaskByte2_1>
-          <AccMaskByte3_0>FF</AccMaskByte3_0>
-          <AccMaskByte3_1>FF</AccMaskByte3_1>
-          <AccMaskByte4_0>FF</AccMaskByte4_0>
-          <AccMaskByte4_1>FF</AccMaskByte4_1>
-          <HardwareDesc>Simulation</HardwareDesc>
-          <ItemUnderFocus>64</ItemUnderFocus>
-          <BTR0BTR1>49210</BTR0BTR1>
-          <AccFilterMode>0</AccFilterMode>
-          <ControllerMode>1</ControllerMode>
-          <SelfReception>1</SelfReception>
-          <HWFilterType_0>0</HWFilterType_0>
-          <HWFilterType_1>0</HWFilterType_1>
-          <Debug>0</Debug>
-          <PassiveMode>0</PassiveMode>
-          <HWTimestamps>0</HWTimestamps>
-          <Location/>
-          <LowSpeed>0</LowSpeed>
-          <CANFD_BaudRate>2000000</CANFD_BaudRate>
-          <CANFD_SamplePoint>70</CANFD_SamplePoint>
-          <CANFD_BTLCycles>10</CANFD_BTLCycles>
-          <CANFD_SJW>3</CANFD_SJW>
-          <CANFD_TxDelayCompensation>0</CANFD_TxDelayCompensation>
-          <CANFD_TxSecondarySamplePoint>0</CANFD_TxSecondarySamplePoint>
-        </Channel>
-        <Channel>
-          <BaudRate>500</BaudRate>
-          <CNF1>7</CNF1>
-          <CNF2>B8</CNF2>
-          <CNF3>5</CNF3>
-          <BTR0>C0</BTR0>
-          <BTR1>3A</BTR1>
-          <Clock>16</Clock>
-          <SamplePerc>75</SamplePerc>
-          <Sampling>1</Sampling>
-          <BTLCycles>10</BTLCycles>
-          <Warning_Limit>96</Warning_Limit>
-          <Propagation_Delay>ALL</Propagation_Delay>
-          <SJW>4</SJW>
-          <AccCodeByte1_0>0</AccCodeByte1_0>
-          <AccCodeByte1_1>0</AccCodeByte1_1>
-          <AccCodeByte2_0>0</AccCodeByte2_0>
-          <AccCodeByte2_1>0</AccCodeByte2_1>
-          <AccCodeByte3_0>0</AccCodeByte3_0>
-          <AccCodeByte3_1>0</AccCodeByte3_1>
-          <AccCodeByte4_0>0</AccCodeByte4_0>
-          <AccCodeByte4_1>0</AccCodeByte4_1>
-          <AccMaskByte1_0>FF</AccMaskByte1_0>
-          <AccMaskByte1_1>FF</AccMaskByte1_1>
-          <AccMaskByte2_0>FF</AccMaskByte2_0>
-          <AccMaskByte2_1>FF</AccMaskByte2_1>
-          <AccMaskByte3_0>FF</AccMaskByte3_0>
-          <AccMaskByte3_1>FF</AccMaskByte3_1>
-          <AccMaskByte4_0>FF</AccMaskByte4_0>
-          <AccMaskByte4_1>FF</AccMaskByte4_1>
-          <HardwareDesc>Simulation</HardwareDesc>
-          <ItemUnderFocus>64</ItemUnderFocus>
-          <BTR0BTR1>49210</BTR0BTR1>
-          <AccFilterMode>0</AccFilterMode>
-          <ControllerMode>1</ControllerMode>
-          <SelfReception>1</SelfReception>
-          <HWFilterType_0>0</HWFilterType_0>
-          <HWFilterType_1>0</HWFilterType_1>
-          <Debug>0</Debug>
-          <PassiveMode>0</PassiveMode>
-          <HWTimestamps>0</HWTimestamps>
-          <Location/>
-          <LowSpeed>0</LowSpeed>
-          <CANFD_BaudRate>2000000</CANFD_BaudRate>
-          <CANFD_SamplePoint>70</CANFD_SamplePoint>
-          <CANFD_BTLCycles>10</CANFD_BTLCycles>
-          <CANFD_SJW>3</CANFD_SJW>
-          <CANFD_TxDelayCompensation>0</CANFD_TxDelayCompensation>
-          <CANFD_TxSecondarySamplePoint>0</CANFD_TxSecondarySamplePoint>
-        </Channel>
-        <Channel>
-          <BaudRate>500</BaudRate>
-          <CNF1>7</CNF1>
-          <CNF2>B8</CNF2>
-          <CNF3>5</CNF3>
-          <BTR0>C0</BTR0>
-          <BTR1>3A</BTR1>
-          <Clock>16</Clock>
-          <SamplePerc>75</SamplePerc>
-          <Sampling>1</Sampling>
-          <BTLCycles>10</BTLCycles>
-          <Warning_Limit>96</Warning_Limit>
-          <Propagation_Delay>ALL</Propagation_Delay>
-          <SJW>4</SJW>
-          <AccCodeByte1_0>0</AccCodeByte1_0>
-          <AccCodeByte1_1>0</AccCodeByte1_1>
-          <AccCodeByte2_0>0</AccCodeByte2_0>
-          <AccCodeByte2_1>0</AccCodeByte2_1>
-          <AccCodeByte3_0>0</AccCodeByte3_0>
-          <AccCodeByte3_1>0</AccCodeByte3_1>
-          <AccCodeByte4_0>0</AccCodeByte4_0>
-          <AccCodeByte4_1>0</AccCodeByte4_1>
-          <AccMaskByte1_0>FF</AccMaskByte1_0>
-          <AccMaskByte1_1>FF</AccMaskByte1_1>
-          <AccMaskByte2_0>FF</AccMaskByte2_0>
-          <AccMaskByte2_1>FF</AccMaskByte2_1>
-          <AccMaskByte3_0>FF</AccMaskByte3_0>
-          <AccMaskByte3_1>FF</AccMaskByte3_1>
-          <AccMaskByte4_0>FF</AccMaskByte4_0>
-          <AccMaskByte4_1>FF</AccMaskByte4_1>
-          <HardwareDesc>Simulation</HardwareDesc>
-          <ItemUnderFocus>64</ItemUnderFocus>
-          <BTR0BTR1>49210</BTR0BTR1>
-          <AccFilterMode>0</AccFilterMode>
-          <ControllerMode>1</ControllerMode>
-          <SelfReception>1</SelfReception>
-          <HWFilterType_0>0</HWFilterType_0>
-          <HWFilterType_1>0</HWFilterType_1>
-          <Debug>0</Debug>
-          <PassiveMode>0</PassiveMode>
-          <HWTimestamps>0</HWTimestamps>
-          <Location/>
-          <LowSpeed>0</LowSpeed>
-          <CANFD_BaudRate>2000000</CANFD_BaudRate>
-          <CANFD_SamplePoint>70</CANFD_SamplePoint>
-          <CANFD_BTLCycles>10</CANFD_BTLCycles>
-          <CANFD_SJW>3</CANFD_SJW>
-          <CANFD_TxDelayCompensation>0</CANFD_TxDelayCompensation>
-          <CANFD_TxSecondarySamplePoint>0</CANFD_TxSecondarySamplePoint>
-        </Channel>
-        <Channel>
-          <BaudRate>500</BaudRate>
-          <CNF1>7</CNF1>
-          <CNF2>B8</CNF2>
-          <CNF3>5</CNF3>
-          <BTR0>C0</BTR0>
-          <BTR1>3A</BTR1>
-          <Clock>16</Clock>
-          <SamplePerc>75</SamplePerc>
-          <Sampling>1</Sampling>
-          <BTLCycles>10</BTLCycles>
-          <Warning_Limit>96</Warning_Limit>
-          <Propagation_Delay>ALL</Propagation_Delay>
-          <SJW>4</SJW>
-          <AccCodeByte1_0>0</AccCodeByte1_0>
-          <AccCodeByte1_1>0</AccCodeByte1_1>
-          <AccCodeByte2_0>0</AccCodeByte2_0>
-          <AccCodeByte2_1>0</AccCodeByte2_1>
-          <AccCodeByte3_0>0</AccCodeByte3_0>
-          <AccCodeByte3_1>0</AccCodeByte3_1>
-          <AccCodeByte4_0>0</AccCodeByte4_0>
-          <AccCodeByte4_1>0</AccCodeByte4_1>
-          <AccMaskByte1_0>FF</AccMaskByte1_0>
-          <AccMaskByte1_1>FF</AccMaskByte1_1>
-          <AccMaskByte2_0>FF</AccMaskByte2_0>
-          <AccMaskByte2_1>FF</AccMaskByte2_1>
-          <AccMaskByte3_0>FF</AccMaskByte3_0>
-          <AccMaskByte3_1>FF</AccMaskByte3_1>
-          <AccMaskByte4_0>FF</AccMaskByte4_0>
-          <AccMaskByte4_1>FF</AccMaskByte4_1>
-          <HardwareDesc>Simulation</HardwareDesc>
-          <ItemUnderFocus>64</ItemUnderFocus>
-          <BTR0BTR1>49210</BTR0BTR1>
+          <BTR0BTR1>0</BTR0BTR1>
           <AccFilterMode>0</AccFilterMode>
           <ControllerMode>1</ControllerMode>
           <SelfReception>1</SelfReception>
@@ -843,10 +95,10 @@
         <Bottom>300</Bottom>
       </Window_Position>
       <COLUMN_WIDTH>
-        <MESSAGE_COLUMN>87</MESSAGE_COLUMN>
-        <Raw_Val_Column>87</Raw_Val_Column>
-        <Physical_Val_Column>174</Physical_Val_Column>
-        <Signal_Column>87</Signal_Column>
+        <MESSAGE_COLUMN>94</MESSAGE_COLUMN>
+        <Raw_Val_Column>94</Raw_Val_Column>
+        <Physical_Val_Column>189</Physical_Val_Column>
+        <Signal_Column>94</Signal_Column>
       </COLUMN_WIDTH>
     </CAN_Signal_Watch>
     <J1939_Signal_Watch>
@@ -859,10 +111,10 @@
         <Bottom>300</Bottom>
       </Window_Position>
       <COLUMN_WIDTH>
-        <MESSAGE_COLUMN>87</MESSAGE_COLUMN>
-        <Raw_Val_Column>87</Raw_Val_Column>
-        <Physical_Val_Column>174</Physical_Val_Column>
-        <Signal_Column>87</Signal_Column>
+        <MESSAGE_COLUMN>94</MESSAGE_COLUMN>
+        <Raw_Val_Column>94</Raw_Val_Column>
+        <Physical_Val_Column>189</Physical_Val_Column>
+        <Signal_Column>94</Signal_Column>
       </COLUMN_WIDTH>
     </J1939_Signal_Watch>
     <LIN_Signal_Watch>
@@ -875,10 +127,10 @@
         <Bottom>300</Bottom>
       </Window_Position>
       <COLUMN_WIDTH>
-        <MESSAGE_COLUMN>87</MESSAGE_COLUMN>
-        <Raw_Val_Column>87</Raw_Val_Column>
-        <Physical_Val_Column>174</Physical_Val_Column>
-        <Signal_Column>87</Signal_Column>
+        <MESSAGE_COLUMN>94</MESSAGE_COLUMN>
+        <Raw_Val_Column>94</Raw_Val_Column>
+        <Physical_Val_Column>189</Physical_Val_Column>
+        <Signal_Column>94</Signal_Column>
       </COLUMN_WIDTH>
     </LIN_Signal_Watch>
     <CAN_Signal_Graph>
@@ -996,7 +248,7 @@
         <ID>Message</ID>
         <Order>7</Order>
         <IsVisible>1</IsVisible>
-        <Width>95</Width>
+        <Width>154</Width>
       </COLUMN>
       <COLUMN>
         <ID>DLC</ID>
@@ -1008,15 +260,15 @@
         <ID>Data Byte(s)</ID>
         <Order>9</Order>
         <IsVisible>1</IsVisible>
-        <Width>999</Width>
+        <Width>940</Width>
       </COLUMN>
       <IsHex>1</IsHex>
-      <IsAppend>0</IsAppend>
+      <IsAppend>1</IsAppend>
       <IsInterpret>0</IsInterpret>
       <Time_Mode>SYSTEM</Time_Mode>
       <Window_Position>
         <Visibility>SHOWNORMAL</Visibility>
-        <WindowPlacement>RESTORETOMAXIMIZED</WindowPlacement>
+        <WindowPlacement>SETMINPOSITION</WindowPlacement>
         <Top>0</Top>
         <Left>0</Left>
         <Bottom>637</Bottom>
@@ -1025,10 +277,10 @@
       <Interpretation_Window_Position>
         <Visibility>SHOWNORMAL</Visibility>
         <WindowPlacement>RESTORETOMAXIMIZED</WindowPlacement>
-        <Top>179</Top>
-        <Left>10</Left>
-        <Bottom>457</Bottom>
-        <Right>359</Right>
+        <Top>182</Top>
+        <Left>14</Left>
+        <Bottom>460</Bottom>
+        <Right>363</Right>
       </Interpretation_Window_Position>
     </CAN_Message_Window>
     <J1939_Message_Window>
@@ -1116,7 +368,7 @@
       <Time_Mode>SYSTEM</Time_Mode>
       <Window_Position>
         <Visibility>SHOWNORMAL</Visibility>
-        <WindowPlacement>RESTORETOMAXIMIZED</WindowPlacement>
+        <WindowPlacement>SETMINPOSITION</WindowPlacement>
         <Top>0</Top>
         <Left>0</Left>
         <Bottom>637</Bottom>
@@ -1125,10 +377,10 @@
       <Interpretation_Window_Position>
         <Visibility>SHOWNORMAL</Visibility>
         <WindowPlacement>RESTORETOMAXIMIZED</WindowPlacement>
-        <Top>179</Top>
-        <Left>10</Left>
-        <Bottom>457</Bottom>
-        <Right>359</Right>
+        <Top>182</Top>
+        <Left>14</Left>
+        <Bottom>460</Bottom>
+        <Right>363</Right>
       </Interpretation_Window_Position>
     </J1939_Message_Window>
     <LIN_Message_Window>
@@ -1201,7 +453,7 @@
       <Time_Mode>SYSTEM</Time_Mode>
       <Window_Position>
         <Visibility>SHOWNORMAL</Visibility>
-        <WindowPlacement>RESTORETOMAXIMIZED</WindowPlacement>
+        <WindowPlacement>SETMINPOSITION</WindowPlacement>
         <Top>0</Top>
         <Left>0</Left>
         <Bottom>637</Bottom>
@@ -1210,10 +462,10 @@
       <Interpretation_Window_Position>
         <Visibility>SHOWNORMAL</Visibility>
         <WindowPlacement>RESTORETOMAXIMIZED</WindowPlacement>
-        <Top>179</Top>
-        <Left>10</Left>
-        <Bottom>457</Bottom>
-        <Right>359</Right>
+        <Top>182</Top>
+        <Left>14</Left>
+        <Bottom>460</Bottom>
+        <Right>363</Right>
       </Interpretation_Window_Position>
     </LIN_Message_Window>
     <CAN_Tx_Window>

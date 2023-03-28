@@ -72,9 +72,9 @@ void main(void)
     //INTERRUPT_PeripheralInterruptDisable();
 
     //int8_t CanSend(CAN_TX_MSGOBJ * txObj, uint8_t * txd)
-    
-    CanInit(0, 0x08);
-   initCarCommunication();
+    SPI2_Open(SPI2_DEFAULT);
+    CanInit(0, CAN_250K_500K);
+   initCar();
             
    //Front LEDs  first Set at 100%
    setFrontLight(100);
@@ -82,11 +82,12 @@ void main(void)
    //Recieve Motor Status
 
    
-   CAN_RX_MSGOBJ rxObj1;
+   //OLD - test du filtre
+  /* CAN_RX_MSGOBJ rxObj1;
    uint8_t rxtab[8];
        // define filter to use --------------------------------------------------
     CAN_FILTEROBJ_ID fObj;
-    fObj.ID = carId;              // standard filter 11 bits value
+    fObj.ID = 0x3;              // standard filter 11 bits value
     fObj.SID11 = 0;               // 12 bits only used in FD mode
     fObj.EXIDE = 0;               // assign to standard identifiers
     // define mask for filter ------------------------------------------------
@@ -95,11 +96,21 @@ void main(void)
     mObj.MSID11 = 0;              // 12 bits only used in FD mode
     mObj.MIDE = 1;                // match identifier size in filter
     CanSetFilter(CAN_FILTER0,&fObj,&mObj);
-    
+    */
+   
+   
     while (1)
     {
-       if(CanReceive(&rxObj1, rxtab)==0)
+        
+        carStateUpdate();
+        
+        TMR0_SetInterruptHandler(carControlUpdate());
+        
+        
+        //Test of the front lights and communication with pedals
+      /* if(CanReceive(&rxObj1, rxtab)==0)
        {
+           volatile uint8_t dummy=25;
            switch(rxObj1.bF.id.ID >> 4)
            {
            case ACCEL_PEDAL:
@@ -116,7 +127,7 @@ void main(void)
                setFrontLight(10);
                break;
            }
-       }
+       }*/
     }
 }
 /**

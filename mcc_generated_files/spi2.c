@@ -56,14 +56,14 @@ typedef struct {
 
 //con1 == SSPxCON1, stat == SSPxSTAT, add == SSPxADD, operation == Master/Slave
 static const spi2_configuration_t spi2_configuration[] = {   
-    { 0x21, 0x40, 0x0, 0 }
+    { 0x20, 0x40, 0x0, 0 }
 };
 
 void SPI2_Initialize(void)
 {
     //SPI setup
     SSP2STAT = 0x40;
-    SSP2CON1 = 0x21;
+    SSP2CON1 = 0x20;
     SSP2ADD = 0x00;
     TRISDbits.TRISD6 = 0;
     SSP2CON1bits.SSPEN = 1;
