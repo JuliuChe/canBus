@@ -77,7 +77,7 @@ void main(void)
    initCar();
             
    //Front LEDs  first Set at 100%
-   setFrontLight(100);
+   setLight(100, LIGHT_FRONT);
    
    //Recieve Motor Status
 

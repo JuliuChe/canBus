@@ -74,14 +74,79 @@ extern CAN_FILTEROBJ_ID fObj;
       int8_t slopeValue; // -100 to +100 has to be requested by controller
       mode race;
       uint8_t carId;
+      
+      //Value to be saved until next interrupt
+      uint8_t lastFrontLightInt;
+      uint8_t lastBackLightInt;
+      uint8_t lastGearLevel;
+      
+      
   }CAR_STATE;
   
   extern CAR_STATE myCar;
   
 void initCar();
 uint8_t getCarId();
-void setFrontLight(uint8_t intensity);
-void carStateUpdate()();
+void carStateUpdate();
+
+
+//For the Light_Type use the following define : LIGHT_FRONT or LIGHT_BACK
+void setLight(uint8_t intensity, uint8_t Light_Type); 
+
+//For sec, if you want the colon to blink put 1, if not put 0
+void setTimeInCockpit(uint8_t hours, uint8_t min, bool sec);
+
+//Sets the gear level 
+//0 is neutral
+//1-5 is gear level must be increased to increase car speed
+void setGearLvl(uint8_t g);
+
+//-----------------------------------------------------------------------------TO BE COMPLETED IN carFunction.c----------------------------------/
+
+//main function executed in interrupt
+void carControlUpdate();
+
+
+//Enables noise of motor
+//If motorDriven is set to 0, the noise will remain as slow speed
+//If motorDriven is set to 1, the noise will increase with the speed
+void setAudio(uint8_t volume, bool motorDriven);
+
+//Set PWR of the motor
+// pwr is 0-100
+//NOT UNDERSTAND : starter could not understand what this is dong here 
+void setPwrMotor(uint8_t pwr, bool starter);
+
+//Set pwr factor applied to brakes
+void setPwrBrakes(uint8_t pwr, bool starter);
+
+//Set tempomat off
+void setTempoOff(); //to be impl. if brake are over x%, set it off
+
+//Pulse to be sent each 100m
+//NOT UNDERSTAND THIS MESSAGE
+void setKmPulse();
+        
+//Auto_steering
+void setSteeringPos(int8_t pos, bool auto);
+
+//Reset Car (only for debug)
+void resetCarState();
+
+//get FRONT_SEN_REQ value
+uint16_t getFrontSenValue();
+
+//get steering Wheel REQ value
+int8_t getSteeringValue();
+
+//get Slope_REQ value
+int8_t getSlopeValue();
+
+
+
+
+
+
 
 
 
