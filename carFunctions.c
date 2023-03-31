@@ -15,6 +15,7 @@
  * 
  */
 
+uint8_t tenMillisecElapsed = 0;
 CAR_STATE myCar; //Values of the car 
 
 //Communication variables used to exchange between the car and the controller
@@ -27,13 +28,90 @@ CAR_STATE myCar; //Values of the car
  uint8_t txd[8] = {0,1,2,3,4,5,6,7};
  CAN_TX_MSGOBJ txObj;
 
+ //Initialize Struct of myCar 
+ void carStateInit()
+ {
+     myCar.tempomat=0;
+     myCar.gearSel='P';
+     myCar.motorRpm=0;
+     myCar.carSpeed=0;
+     myCar.brakePedal=0;
+     myCar.accelPedal=0;
+     myCar.contactKey=0;
+     myCar.brokenCar=NO_ERROR;
+     myCar.badMessage=NO_MSG_ERROR;
+     frontSensorRR();
+     steeringWheelRR();
+     slopeValueRR();
+     myCar.race=NOT_IN_RACE;
+
+      //Value to be saved until next interrupt
+      myCar.lastFrontLightInt=0;
+      myCar.lastBackLightInt=0;
+      myCar.lastGearLevel=0;
+      myCar.lastVolume=0;
+      myCar.lastContactKey=0;
+ }
+ 
+ //Request value of RR fields
+//FRONT_SENS_REQ
+void frontSensorRR()
+{
+     
+   //Request sensorValue 
+    txObj.bF.id.ID = FRONT_SENS_REQ;         // standard identifier example
+    txObj.bF.ctrl.DLC = CAN_DLC_0;  // 0 bytes to send
+    txObj.bF.ctrl.RTR = 1;          // no remote frame
+    txObj.bF.id.SID11 = 0;          // only used in FD mode
+    txObj.bF.ctrl.FDF = 0;          // no CAN FD mode
+    txObj.bF.ctrl.IDE = 0;          // standard identifier format
+    txObj.bF.ctrl.BRS = 0;          // no data bitrate switch (FD mode)
+    txObj.bF.ctrl.ESI = 0;    
+    
+             CanSend(&txObj,txd);
+    while(CanReceive(&rxObj, rxtab)==1){}
+    myCar.sensor.frontSensor=(((uint16_t)rxtab[0]<<8)| rxtab[1]);  
+}
+
+void steeringWheelRR()
+{
+        txObj.bF.id.ID = STEERING_W_REQ;         // standard identifier example
+    txObj.bF.ctrl.DLC = CAN_DLC_0;  // 0 bytes to send
+    txObj.bF.ctrl.RTR = 1;          // no remote frame
+    txObj.bF.id.SID11 = 0;          // only used in FD mode
+    txObj.bF.ctrl.FDF = 0;          // no CAN FD mode
+    txObj.bF.ctrl.IDE = 0;          // standard identifier format
+    txObj.bF.ctrl.BRS = 0;          // no data bitrate switch (FD mode)
+    txObj.bF.ctrl.ESI = 0;    
+    
+             CanSend(&txObj,txd);
+    while(CanReceive(&rxObj, rxtab)==1){}
+    myCar.steeringValue=(int8_t)rxtab[0];  
+}
+
+void slopeValueRR()
+{
+            txObj.bF.id.ID = SLOPE_REQ;         // standard identifier example
+    txObj.bF.ctrl.DLC = CAN_DLC_0;  // 0 bytes to send
+    txObj.bF.ctrl.RTR = 1;          // no remote frame
+    txObj.bF.id.SID11 = 0;          // only used in FD mode
+    txObj.bF.ctrl.FDF = 0;          // no CAN FD mode
+    txObj.bF.ctrl.IDE = 0;          // standard identifier format
+    txObj.bF.ctrl.BRS = 0;          // no data bitrate switch (FD mode)
+    txObj.bF.ctrl.ESI = 0;    
+    
+             CanSend(&txObj,txd);
+    while(CanReceive(&rxObj, rxtab)==1){}
+    myCar.slopeValue=(int8_t)rxtab[0];  
+}
+
 
  //Method that set the light intensity (0 to 100) of the front and back lights 
 void setLight(uint8_t intensity, uint8_t Light_Type)//TO BE TESTED
 {
     uint8_t last=0;
     
-    if(Light_Type=LIGHT_FRONT)
+    if(Light_Type==LIGHT_FRONT)
     {
     last=myCar.lastFrontLightInt;
     }
@@ -41,14 +119,11 @@ void setLight(uint8_t intensity, uint8_t Light_Type)//TO BE TESTED
     {
         last=myCar.lastBackLightInt;
     }
-    if(myCar.contactKey==0)
-    {
-        intensity = 0;
-    }
+    
     if(last!=intensity)
     {
     txd[0]=intensity;
-    txObj.bF.id.ID = ((Light_Type<<4)|myCar.carId);         // standard identifier example
+    txObj.bF.id.ID = (((uint16_t)Light_Type<<4)|myCar.carId);         // standard identifier example
     txObj.bF.ctrl.DLC = CAN_DLC_1;  // 1 bytes to send
     txObj.bF.ctrl.RTR = 0;          // no remote frame
     txObj.bF.id.SID11 = 0;          // only used in FD mode
@@ -57,10 +132,10 @@ void setLight(uint8_t intensity, uint8_t Light_Type)//TO BE TESTED
     txObj.bF.ctrl.BRS = 0;          // no data bitrate switch (FD mode)
     txObj.bF.ctrl.ESI = 0;
     CanSend(&txObj,txd);
-    //last=intensity;
+    
     }
     
-    if(Light_Type=LIGHT_FRONT)
+    if(Light_Type==LIGHT_FRONT)
     {
     myCar.lastFrontLightInt=intensity;
     }
@@ -70,7 +145,7 @@ void setLight(uint8_t intensity, uint8_t Light_Type)//TO BE TESTED
     }
 }
 
-void setTimeInCockpit(uint8_t hours, uint8_t min, char sec)//TO BE TESTED
+void setTimeInCockpit(uint8_t hours, uint8_t min, bool sec)//TO BE TESTED
 {
     
     txd[0]=hours;
@@ -92,9 +167,17 @@ void setGearLvl(uint8_t g) //TO BE TESTED
 {
   uint8_t last = 0;
   last=myCar.lastGearLevel;
+  char autoGear = myCar.gearSel;
   
   if(last!=g)
   {
+      if((autoGear=='P')|(autoGear=='N')){
+          g=0;
+      }
+      if((autoGear=='R')&(g>1))
+      {
+          g=1;
+      }
         txd[0]=g;
     txObj.bF.id.ID = ((GEAR_LVL<<4)|myCar.carId);         // standard identifier example
     txObj.bF.ctrl.DLC = CAN_DLC_1;  // 1 bytes to send
@@ -107,7 +190,6 @@ void setGearLvl(uint8_t g) //TO BE TESTED
     CanSend(&txObj,txd);
     myCar.lastGearLevel=g;
   }
- 
 }
 
 
@@ -152,7 +234,7 @@ uint8_t getCarId() //OK DONE
 
   
     
-  while(CanReceive(&rxObj, rxtab)==1){}
+  while(CanReceive(&rxObj, rxtab)!=0){}
       mObj.MID = 0xF;
       fObj.ID = rxtab[0];
       CanSetFilter(CAN_FILTER0,&fObj,&mObj);
@@ -163,9 +245,10 @@ uint8_t getCarId() //OK DONE
 
 void carStateUpdate() //OK DONE
 {
-    if (CanReceive(&rxObj, rxtab) == 0)
+    int8_t temp = CanReceive(&rxObj, rxtab);
+    if (temp == 0)
     {
-        volatile uint8_t dummy =25;
+       
 
         switch (rxObj.bF.id.ID >> 4)
         {
@@ -173,17 +256,17 @@ void carStateUpdate() //OK DONE
             myCar.tempomat = rxtab[0];
             break;
         case GEAR_SEL:
-            myCar.gear=rxtab[0];
+            myCar.gearSel=rxtab[0];
             break;
         case EXT_SENSORS:
             if (myCar.race==NOT_IN_RACE)
             {
-                myCar.frontSensor=((((uint16_t)rxtab[0])<<8)|rxtab[1]); //Be careful with operators' precedence, parenthesis and typecast added 
+                myCar.sensor.frontSensor=((((uint16_t)rxtab[0])<<8)|rxtab[1]); //Be careful with operators' precedence, parenthesis and typecast added 
             }
             else
             {
-            myCar.frontLeftS=rxtab[0];
-            myCar.frontRightS=rxtab[1];
+            myCar.sensor.ext_sensor.frontLeftS=rxtab[0];
+            myCar.sensor.ext_sensor.frontRightS=rxtab[1];
             }
             break;
 
@@ -242,8 +325,28 @@ void carStateUpdate() //OK DONE
 //Enables noise of motor
 //If motorDriven is set to 0, the noise will remain as slow speed
 //If motorDriven is set to 1, the noise will increase with the speed
-void setAudio(uint8_t volume, bool motorDriven)
+void setAudio(uint8_t volume, bool motorDriven)//TO BE TESTED
 {
+     uint8_t lastVolume = 0;
+  lastVolume =myCar.lastVolume;
+  
+  
+  
+  if(lastVolume!= volume)
+  {
+    txd[0]=volume;
+    txd[1]= motorDriven;
+    txObj.bF.id.ID = ((AUDIO<<4)|myCar.carId);         // standard identifier example
+    txObj.bF.ctrl.DLC = CAN_DLC_2;  // 1 bytes to send
+    txObj.bF.ctrl.RTR = 0;          // no remote frame
+    txObj.bF.id.SID11 = 0;          // only used in FD mode
+    txObj.bF.ctrl.FDF = 0;          // no CAN FD mode
+    txObj.bF.ctrl.IDE = 0;          // standard identifier format
+    txObj.bF.ctrl.BRS = 0;          // no data bitrate switch (FD mode)
+    txObj.bF.ctrl.ESI = 0;
+    CanSend(&txObj,txd);
+    myCar.lastVolume=volume;
+  } 
 }
 
 //Set PWR of the motor
@@ -251,6 +354,7 @@ void setAudio(uint8_t volume, bool motorDriven)
 //NOT UNDERSTAND : starter could not understand what this is dong here 
 void setPwrMotor(uint8_t pwr, bool starter)
 {
+    
 }
 
 //Set pwr factor applied to brakes
@@ -270,7 +374,7 @@ void setKmPulse()
 }
         
 //Auto_steering
-void setSteeringPos(int8_t pos, bool auto)
+void setSteeringPos(int8_t pos, bool automatic)
 {
 }
 
@@ -298,12 +402,28 @@ int8_t getSlopeValue()
    //Code to be implemented to control the car by the contoller
 void carControlUpdate()
 {
-    if(myCar.contactKey==0)
-    {
-        
-        
     
-    }
+    tenMillisecElapsed = 1;
+   
  
 
+}
+
+void sendStuff(){
+    if((myCar.contactKey!=myCar.lastContactKey) && (myCar.contactKey==1)) //SO that it tunrs lights on only when key is turned
+    {
+        setLight(100, LIGHT_FRONT);
+        setLight(100, LIGHT_BACK);
+        myCar.lastContactKey=1;
+        
+    }
+    
+    if((myCar.contactKey!=myCar.lastContactKey) && (myCar.contactKey==0))
+    {
+          setLight(0, LIGHT_FRONT);
+        setLight(0, LIGHT_BACK);
+        myCar.lastContactKey=0;
+    }
+    
+    tenMillisecElapsed = 0;
 }

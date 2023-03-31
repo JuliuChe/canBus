@@ -60,7 +60,7 @@ void main(void)
     // Use the following macros to:
 
     // Enable the Global Interrupts
-    //INTERRUPT_GlobalInterruptEnable();
+    INTERRUPT_GlobalInterruptEnable();
 
     // Disable the Global Interrupts
     //INTERRUPT_GlobalInterruptDisable();
@@ -76,8 +76,6 @@ void main(void)
     CanInit(0, CAN_250K_500K);
    initCar();
             
-   //Front LEDs  first Set at 100%
-   setLight(100, LIGHT_FRONT);
    
    //Recieve Motor Status
 
@@ -98,13 +96,18 @@ void main(void)
     CanSetFilter(CAN_FILTER0,&fObj,&mObj);
     */
    
-   
+   //initialize Car status on power On
+   carStateInit();
+    TMR0_SetInterruptHandler(carControlUpdate);
+    
     while (1)
     {
         
         carStateUpdate();
+        //setAudio(100, 0);
         
-        TMR0_SetInterruptHandler(carControlUpdate());
+        
+         //setLight(100, LIGHT_FRONT);
         
         
         //Test of the front lights and communication with pedals
@@ -128,6 +131,9 @@ void main(void)
                break;
            }
        }*/
+        if(tenMillisecElapsed==1){
+            sendStuff();
+        }
     }
 }
 /**

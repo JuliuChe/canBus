@@ -53,16 +53,23 @@ extern CAN_FILTEROBJ_ID fObj;
   extern uint8_t rxtab[8];
   extern CAN_RX_MSGOBJ rxObj1;
   extern  CAN_TX_MSGOBJ txObj;
-  typedef enum carError{STARTER=1, RPM,SPEED, GEAR_CHG, POWER_MOTOR, WALL, RACE_END}carErrors;
-  typedef enum msgError{WRONG_LGTH, WRONG_PARAM, UNKNWN_MSG_ID}msgErrors;
+  typedef enum carError{STARTER=1, RPM,SPEED, GEAR_CHG, POWER_MOTOR, WALL, RACE_END, NO_ERROR}carErrors;
+  typedef enum msgError{WRONG_LGTH, WRONG_PARAM, UNKNWN_MSG_ID,NO_MSG_ERROR}msgErrors;
   typedef enum modes{NOT_IN_RACE, READY_RACE, RACE_START}mode;
-  
+           typedef struct extSensors {
+                uint8_t frontLeftS; //Changes at event, in car race mode only
+                uint8_t frontRightS; //Changes at event, in car race mode only
+            } RACE_SENSORS;
+
+  typedef union Sensors {
+            uint16_t frontSensor; //has to be requested by controller
+            RACE_SENSORS ext_sensor;
+        }SENSOR; 
   typedef struct CARSTATE{
       bool tempomat;
-      char gear;
-      uint16_t frontSensor; //has to be requested by controller
-      uint8_t frontLeftS; //Changes at event, in car race mode only
-      uint8_t frontRightS;//Changes at event, in car race mode only
+      char gearSel;
+
+      SENSOR sensor;
       uint16_t motorRpm;
       int16_t carSpeed;  //Signed, a negative value means it's going backwards
       uint8_t brakePedal;
@@ -79,8 +86,9 @@ extern CAN_FILTEROBJ_ID fObj;
       uint8_t lastFrontLightInt;
       uint8_t lastBackLightInt;
       uint8_t lastGearLevel;
-      
-      
+      uint8_t lastVolume;
+      bool lastContactKey;
+     
   }CAR_STATE;
   
   extern CAR_STATE myCar;
@@ -89,6 +97,11 @@ void initCar();
 uint8_t getCarId();
 void carStateUpdate();
 
+//Initalize status of each car component
+void carStateInit();
+void frontSensorRR();
+     void steeringWheelRR();
+     void slopeValueRR();
 
 //For the Light_Type use the following define : LIGHT_FRONT or LIGHT_BACK
 void setLight(uint8_t intensity, uint8_t Light_Type); 
@@ -102,6 +115,11 @@ void setTimeInCockpit(uint8_t hours, uint8_t min, bool sec);
 void setGearLvl(uint8_t g);
 
 //-----------------------------------------------------------------------------TO BE COMPLETED IN carFunction.c----------------------------------/
+
+//Request value of RR fields
+//FRONT_SENS_REQ
+
+
 
 //main function executed in interrupt
 void carControlUpdate();
@@ -128,7 +146,7 @@ void setTempoOff(); //to be impl. if brake are over x%, set it off
 void setKmPulse();
         
 //Auto_steering
-void setSteeringPos(int8_t pos, bool auto);
+void setSteeringPos(int8_t pos, bool automatic);
 
 //Reset Car (only for debug)
 void resetCarState();
@@ -141,6 +159,10 @@ int8_t getSteeringValue();
 
 //get Slope_REQ value
 int8_t getSlopeValue();
+
+void sendStuff(); //Don't be for too long in INTERRUPT SERVICE ROUTINE
+
+extern uint8_t tenMillisecElapsed;
 
 
 

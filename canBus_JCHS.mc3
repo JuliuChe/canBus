@@ -212,7 +212,7 @@
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="MSSP2" name="ActI2cClkSpeed"/>
-         <value></value>
+         <value/>
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="MSSP2" name="ActSpiClkSpeed"/>
@@ -5060,7 +5060,7 @@
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="TMR0" name="actualPeriod"/>
-         <value>0.01024</value>
+         <value>0.00999424</value>
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="TMR0" name="clockFreqKey"/>
@@ -5072,11 +5072,11 @@
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="TMR0" name="maxPeriod"/>
-         <value>0.65536</value>
+         <value>1.07372544</value>
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="TMR0" name="minPeriod"/>
-         <value>0.00256</value>
+         <value>0.000016384</value>
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="TMR0" name="nonpps"/>
@@ -5088,7 +5088,7 @@
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="TMR0" name="prescaledFreq"/>
-         <value>390.625</value>
+         <value>61035.15625</value>
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="TMR0" name="requestedPeriod"/>
@@ -5096,7 +5096,7 @@
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="TMR0" name="t0ckiPin"/>
-         <value>enabled</value>
+         <value>disabled</value>
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="TMR0" name="tickerFactor"/>
@@ -5180,15 +5180,15 @@
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.RegisterKey" moduleName="TMR0" registerAlias="T0CON"/>
-         <value>247</value>
+         <value>151</value>
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.RegisterKey" moduleName="TMR0" registerAlias="TMR0H"/>
-         <value>0</value>
+         <value>253</value>
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.RegisterKey" moduleName="TMR0" registerAlias="TMR0L"/>
-         <value>252</value>
+         <value>157</value>
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.SettingKey" moduleName="TMR0" registerAlias="T0CON" settingAlias="PS"/>
@@ -5200,7 +5200,7 @@
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.SettingKey" moduleName="TMR0" registerAlias="T0CON" settingAlias="T08BIT"/>
-         <value>8-bit</value>
+         <value>16-bit</value>
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.SettingKey" moduleName="TMR0" registerAlias="T0CON" settingAlias="TMR0ON"/>
@@ -5208,7 +5208,7 @@
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.SettingKey" moduleName="TMR0" registerAlias="T0CON" settingAlias="TMRCS"/>
-         <value>T0CKI</value>
+         <value>FOSC/4</value>
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.SettingKey" moduleName="TMR0" registerAlias="T0CON" settingAlias="TMRSE"/>
@@ -5216,11 +5216,11 @@
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.SettingKey" moduleName="TMR0" registerAlias="TMR0H" settingAlias="TMR0H"/>
-         <value>0</value>
+         <value>253</value>
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.SettingKey" moduleName="TMR0" registerAlias="TMR0L" settingAlias="TMR0L"/>
-         <value>252</value>
+         <value>157</value>
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.SettingKey" moduleName="TMR0" registerAlias="TMRI" settingAlias="enable"/>
@@ -5245,6 +5245,10 @@
    </tokenMap>
    <generatedFileHashHistoryMap class="java.util.HashMap">
       <entry>
+         <file>mcc_generated_files\interrupt_manager.h</file>
+         <hash>5c311e57ab563c3fadc6e5c40b1e425436e9366c40e5772f46f393a9f8ed9d39</hash>
+      </entry>
+      <entry>
          <file>mcc_generated_files\mcc.h</file>
          <hash>50e1b7824bf6046284faf3da3925e5b76d1d00e2df825b49800096d83aadead1</hash>
       </entry>
@@ -5253,12 +5257,8 @@
          <hash>ca9ea96f2e77dca585112654d5aca965a457c087722565a1dc0b0b5ef4bc173b</hash>
       </entry>
       <entry>
-         <file>mcc_generated_files\interrupt_manager.h</file>
-         <hash>5c311e57ab563c3fadc6e5c40b1e425436e9366c40e5772f46f393a9f8ed9d39</hash>
-      </entry>
-      <entry>
          <file>mcc_generated_files\tmr0.h</file>
-         <hash>cc8840a5c469739a44ea50c3e9fa8b5c9d0965dd01a2a882f69ac7d2780684c5</hash>
+         <hash>60487f4faa42d9fec7389ebc68c7a0a01ec6343892ddd4f936b3e776d62a07b0</hash>
       </entry>
       <entry>
          <file>main.c</file>
@@ -5282,19 +5282,19 @@
       </entry>
       <entry>
          <file>mcc_generated_files\tmr0.c</file>
-         <hash>30e21fb91a9dc470877c661d34da134b2dfac2dd40051dae389113de1ed745df</hash>
+         <hash>cdbbf89d19201ad2f445677f92b24df53e6e7606c447612359b929d3f08a080c</hash>
       </entry>
       <entry>
          <file>mcc_generated_files\pin_manager.c</file>
          <hash>48a1c11a708e676c88623fc30617807dadb06c7a7aa15040ac535d4191ec5323</hash>
       </entry>
       <entry>
-         <file>mcc_generated_files\mcc.c</file>
-         <hash>21995d7963612c5691035fdfddc73a3d5d8ad966509e3ee2ce1a1a2da4cb93dd</hash>
-      </entry>
-      <entry>
          <file>mcc_generated_files\interrupt_manager.c</file>
          <hash>ddb8e8d3744a5d106c84a03b80282245f18d8577f05ba5bd1edde305ffbc02c5</hash>
+      </entry>
+      <entry>
+         <file>mcc_generated_files\mcc.c</file>
+         <hash>21995d7963612c5691035fdfddc73a3d5d8ad966509e3ee2ce1a1a2da4cb93dd</hash>
       </entry>
    </generatedFileHashHistoryMap>
 </config>
