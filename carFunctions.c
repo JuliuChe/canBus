@@ -14,8 +14,12 @@
 /*
  * 
  */
-
+uint8_t numMillisecElapsed = 0;
+uint8_t fiftyMillisecElapsed = 0;
 uint8_t tenMillisecElapsed = 0;
+uint8_t hour=0, min=0, sec=0;
+uint8_t  numSecElapsed=0, SecElapsed=0;
+
 CAR_STATE myCar; //Values of the car 
 
 //Communication variables used to exchange between the car and the controller
@@ -51,6 +55,7 @@ CAR_STATE myCar; //Values of the car
       myCar.lastGearLevel=0;
       myCar.lastVolume=0;
       myCar.lastContactKey=0;
+      myCar.pwr=0;
  }
  
  //Request value of RR fields
@@ -145,7 +150,39 @@ void setLight(uint8_t intensity, uint8_t Light_Type)//TO BE TESTED
     }
 }
 
-void setTimeInCockpit(uint8_t hours, uint8_t min, bool sec)//TO BE TESTED
+void controlTime() //OK DONE
+{
+    
+    sec++;
+    if(sec==60)
+    {
+        sec=0;
+        min++;
+    }
+    if(min==60)
+    {
+        
+        min=0;
+        hour++;
+    }
+        if(hour==24)
+    {
+        
+       // min=0;
+        hour=0;
+    }
+    
+    if(sec%2==0)
+    {
+    setTimeInCockpit(hour, min, true);
+    }
+    else
+    {
+    setTimeInCockpit(hour, min, false);
+    }
+}
+
+void setTimeInCockpit(uint8_t hours, uint8_t min, bool sec)//OK DONE
 {
     
     txd[0]=hours;
@@ -352,14 +389,72 @@ void setAudio(uint8_t volume, bool motorDriven)//TO BE TESTED
 //Set PWR of the motor
 // pwr is 0-100
 //NOT UNDERSTAND : starter could not understand what this is dong here 
-void setPwrMotor(uint8_t pwr, bool starter)
+void setPwrMotor(uint8_t pwr, bool starter)//OK DONE
 {
+    myCar.pwr=pwr;
+    txd[0]=pwr;
+    txd[1]=starter;
+    txObj.bF.id.ID = (((uint16_t)PWR_MOTOR)<<4|myCar.carId);         // standard identifier example
+    txObj.bF.ctrl.DLC = CAN_DLC_2;  // 1 bytes to send
+    txObj.bF.ctrl.RTR = 0;          // no remote frame
+    txObj.bF.id.SID11 = 0;          // only used in FD mode
+    txObj.bF.ctrl.FDF = 0;          // no CAN FD mode
+    txObj.bF.ctrl.IDE = 0;          // standard identifier format
+    txObj.bF.ctrl.BRS = 0;          // no data bitrate switch (FD mode)
+    txObj.bF.ctrl.ESI = 0;
+    CanSend(&txObj,txd);
     
+    }
+    
+void lightsOnBrake()//OK DONE Could be improved with adaptive lights
+{
+    if(myCar.brakePedal>=10 && myCar.contactKey==1)
+    {
+        setLight(100, LIGHT_BACK);
+    }
+
+    else if(myCar.brakePedal<10 && myCar.contactKey==1) //<5 to detect that null position is not always exactly 0
+    {
+        setLight(50, LIGHT_BACK);
+    }
+    else
+    {
+        setLight(0, LIGHT_BACK);
+    }
 }
 
-//Set pwr factor applied to brakes
-void setPwrBrakes(uint8_t pwr, bool starter)
+void setGas()
 {
+    uint8_t pwr = MAX(12,MIN(80,myCar.accelPedal));
+    if(myCar.contactKey==1 && myCar.motorRpm>0)
+    {
+        if(pwr!=myCar.pwr)
+        {
+    setPwrMotor(pwr,0);
+    }
+    }   
+}
+
+void setBrake()
+{
+     uint8_t pwr = myCar.brakePedal;
+    setPwrBrakes(pwr);
+}
+    
+//Set pwr factor applied to brakes
+void setPwrBrakes(uint8_t pwr)
+{
+        myCar.pwrBrake=pwr;
+    txd[0]=pwr;
+    txObj.bF.id.ID = (((uint16_t)PWR_BRAKE)<<4|myCar.carId);         // standard identifier example
+    txObj.bF.ctrl.DLC = CAN_DLC_1;  // 1 bytes to send
+    txObj.bF.ctrl.RTR = 0;          // no remote frame
+    txObj.bF.id.SID11 = 0;          // only used in FD mode
+    txObj.bF.ctrl.FDF = 0;          // no CAN FD mode
+    txObj.bF.ctrl.IDE = 0;          // standard identifier format
+    txObj.bF.ctrl.BRS = 0;          // no data bitrate switch (FD mode)
+    txObj.bF.ctrl.ESI = 0;
+    CanSend(&txObj,txd);
 }
 
 //Set tempomat off
@@ -404,26 +499,33 @@ void carControlUpdate()
 {
     
     tenMillisecElapsed = 1;
+    numMillisecElapsed+=1;
+    if(numMillisecElapsed%5==0){
+        fiftyMillisecElapsed=1;
+    }
+    if(numMillisecElapsed%100==0)
+    {
+        numMillisecElapsed=0;
+        SecElapsed=1;
+    }
    
  
 
 }
 
-void sendStuff(){
-    if((myCar.contactKey!=myCar.lastContactKey) && (myCar.contactKey==1)) //SO that it tunrs lights on only when key is turned
-    {
-        setLight(100, LIGHT_FRONT);
-        setLight(100, LIGHT_BACK);
+void engineAtStart() //OK DONE
+{
+    if(myCar.motorRpm==0 && myCar.contactKey==1 && myCar.lastContactKey==0){
         myCar.lastContactKey=1;
-        
+        setPwrMotor(12, 1);
+         setLight(100, LIGHT_FRONT);
+        setLight(50, LIGHT_BACK);
     }
-    
-    if((myCar.contactKey!=myCar.lastContactKey) && (myCar.contactKey==0))
-    {
-          setLight(0, LIGHT_FRONT);
-        setLight(0, LIGHT_BACK);
+    if((myCar.contactKey!=myCar.lastContactKey) && (myCar.contactKey==0)){
+        setPwrMotor(0, 0);
         myCar.lastContactKey=0;
+        setLight(0, LIGHT_FRONT);
+        setLight(0, LIGHT_BACK);
+
     }
-    
-    tenMillisecElapsed = 0;
 }

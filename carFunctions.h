@@ -11,6 +11,9 @@
 #ifdef	__cplusplus
 extern "C" {
 #endif
+    
+    #define MIN(a,b) (((a)<(b))?(a):(b))
+#define MAX(a,b) (((a)>(b))?(a):(b))
 
     //Request driven messages
 #define FRONT_SENS_REQ 0x3
@@ -46,6 +49,11 @@ extern "C" {
 #define SETUP_ANALOG 0x21
     
 
+extern uint8_t tenMillisecElapsed;
+extern uint8_t numMillisecElapsed;
+extern uint8_t fiftyMillisecElapsed;
+extern uint8_t hour, min, sec;
+extern uint8_t  numSecElapsed, SecElapsed;
 
 extern CAN_FILTEROBJ_ID fObj;
  extern CAN_MASKOBJ_ID mObj;
@@ -88,6 +96,8 @@ extern CAN_FILTEROBJ_ID fObj;
       uint8_t lastGearLevel;
       uint8_t lastVolume;
       bool lastContactKey;
+      uint8_t pwr;
+      uint8_t pwrBrake;
      
   }CAR_STATE;
   
@@ -136,7 +146,8 @@ void setAudio(uint8_t volume, bool motorDriven);
 void setPwrMotor(uint8_t pwr, bool starter);
 
 //Set pwr factor applied to brakes
-void setPwrBrakes(uint8_t pwr, bool starter);
+void setBrake();
+void setPwrBrakes(uint8_t pwr);
 
 //Set tempomat off
 void setTempoOff(); //to be impl. if brake are over x%, set it off
@@ -160,10 +171,10 @@ int8_t getSteeringValue();
 //get Slope_REQ value
 int8_t getSlopeValue();
 
-void sendStuff(); //Don't be for too long in INTERRUPT SERVICE ROUTINE
-
-extern uint8_t tenMillisecElapsed;
-
+void engineAtStart();
+void lightsOnBrake();
+void setGas();
+void controlTime();
 
 
 

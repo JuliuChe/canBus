@@ -131,9 +131,25 @@ void main(void)
                break;
            }
        }*/
-        if(tenMillisecElapsed==1){
-            sendStuff();
+        if(tenMillisecElapsed==1){            
+            lightsOnBrake();
+            tenMillisecElapsed = 0;
+            setBrake();
+          
         }
+        
+        if (fiftyMillisecElapsed == 1)
+        {
+            engineAtStart();
+            setGas();
+            fiftyMillisecElapsed = 0;
+        }
+        
+        if(SecElapsed==1){
+            controlTime();
+            SecElapsed=0;
+        }
+                
     }
 }
 /**
