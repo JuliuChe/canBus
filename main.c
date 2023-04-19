@@ -134,7 +134,11 @@ void main(void)
         if(tenMillisecElapsed==1){            
             lightsOnBrake();
             tenMillisecElapsed = 0;
-            setBrake();
+            getBrake();
+            reverseMode();
+            driveAtStart();
+            driveInDrive();
+            
           
         }
         

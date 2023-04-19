@@ -2,7 +2,7 @@
 <BUSMASTER_CONFIGURATION>
   <Global_Configuration>
     <BUSMASTER_Version>3.2.2</BUSMASTER_Version>
-    <IsMsgFilterEnabled>FALSE</IsMsgFilterEnabled>
+    <IsMsgFilterEnabled>TRUE</IsMsgFilterEnabled>
     <IsMsgFilterEnabledLin>FALSE</IsMsgFilterEnabledLin>
     <IsReplayFilterEnabled>FALSE</IsReplayFilterEnabled>
     <IsLogFilterEnabled>FALSE</IsLogFilterEnabled>
@@ -85,6 +85,20 @@
         </Channel>
       </ControllerSettings>
     </CAN_DIL_Section>
+    <CAN_Filters>
+      <Filter>
+        <Name>Filter_1</Name>
+        <Type>STOP</Type>
+        <FilterMessage>
+          <IdFrom>115</IdFrom>
+          <IdTo>115</IdTo>
+          <Direction>Rx</Direction>
+          <IDType>STD</IDType>
+          <MsgType>NONRTR</MsgType>
+          <Channel>0</Channel>
+        </FilterMessage>
+      </Filter>
+    </CAN_Filters>
     <CAN_Signal_Watch>
       <Window_Position>
         <Visibility>SHOWNORMAL</Visibility>
@@ -208,6 +222,7 @@
       <Append_Buffer_Size>5000</Append_Buffer_Size>
       <Overwrite_Buffer_Size>2000</Overwrite_Buffer_Size>
       <Display_Update_Time>100</Display_Update_Time>
+      <Filter IsEnabled="1">Filter_1</Filter>
       <COLUMN>
         <ID/>
         <Order>1</Order>
@@ -218,7 +233,7 @@
         <ID>Time</ID>
         <Order>2</Order>
         <IsVisible>1</IsVisible>
-        <Width>95</Width>
+        <Width>260</Width>
       </COLUMN>
       <COLUMN>
         <ID>Tx/Rx</ID>
@@ -242,7 +257,7 @@
         <ID>ID</ID>
         <Order>6</Order>
         <IsVisible>1</IsVisible>
-        <Width>69</Width>
+        <Width>145</Width>
       </COLUMN>
       <COLUMN>
         <ID>Message</ID>
@@ -277,10 +292,10 @@
       <Interpretation_Window_Position>
         <Visibility>SHOWNORMAL</Visibility>
         <WindowPlacement>RESTORETOMAXIMIZED</WindowPlacement>
-        <Top>182</Top>
-        <Left>14</Left>
-        <Bottom>460</Bottom>
-        <Right>363</Right>
+        <Top>181</Top>
+        <Left>18</Left>
+        <Bottom>459</Bottom>
+        <Right>367</Right>
       </Interpretation_Window_Position>
     </CAN_Message_Window>
     <J1939_Message_Window>
@@ -363,7 +378,7 @@
         <Width>694</Width>
       </COLUMN>
       <IsHex>1</IsHex>
-      <IsAppend>0</IsAppend>
+      <IsAppend>1</IsAppend>
       <IsInterpret>0</IsInterpret>
       <Time_Mode>SYSTEM</Time_Mode>
       <Window_Position>
@@ -377,10 +392,10 @@
       <Interpretation_Window_Position>
         <Visibility>SHOWNORMAL</Visibility>
         <WindowPlacement>RESTORETOMAXIMIZED</WindowPlacement>
-        <Top>182</Top>
-        <Left>14</Left>
-        <Bottom>460</Bottom>
-        <Right>363</Right>
+        <Top>181</Top>
+        <Left>18</Left>
+        <Bottom>459</Bottom>
+        <Right>367</Right>
       </Interpretation_Window_Position>
     </J1939_Message_Window>
     <LIN_Message_Window>
@@ -448,7 +463,7 @@
         <Width>708</Width>
       </COLUMN>
       <IsHex>1</IsHex>
-      <IsAppend>0</IsAppend>
+      <IsAppend>1</IsAppend>
       <IsInterpret>0</IsInterpret>
       <Time_Mode>SYSTEM</Time_Mode>
       <Window_Position>
@@ -462,10 +477,10 @@
       <Interpretation_Window_Position>
         <Visibility>SHOWNORMAL</Visibility>
         <WindowPlacement>RESTORETOMAXIMIZED</WindowPlacement>
-        <Top>182</Top>
-        <Left>14</Left>
-        <Bottom>460</Bottom>
-        <Right>363</Right>
+        <Top>181</Top>
+        <Left>18</Left>
+        <Bottom>459</Bottom>
+        <Right>367</Right>
       </Interpretation_Window_Position>
     </LIN_Message_Window>
     <CAN_Tx_Window>

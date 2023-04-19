@@ -146,7 +146,7 @@ void setAudio(uint8_t volume, bool motorDriven);
 void setPwrMotor(uint8_t pwr, bool starter);
 
 //Set pwr factor applied to brakes
-void setBrake();
+void getBrake();
 void setPwrBrakes(uint8_t pwr);
 
 //Set tempomat off
@@ -175,8 +175,9 @@ void engineAtStart();
 void lightsOnBrake();
 void setGas();
 void controlTime();
-
-
+void driveAtStart();
+void driveInDrive();
+void reverseMode();
 
 
 

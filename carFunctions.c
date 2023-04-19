@@ -33,7 +33,7 @@ CAR_STATE myCar; //Values of the car
  CAN_TX_MSGOBJ txObj;
 
  //Initialize Struct of myCar 
- void carStateInit()
+ void carStateInit()//OK DONE
  {
      myCar.tempomat=0;
      myCar.gearSel='P';
@@ -57,62 +57,8 @@ CAR_STATE myCar; //Values of the car
       myCar.lastContactKey=0;
       myCar.pwr=0;
  }
- 
- //Request value of RR fields
-//FRONT_SENS_REQ
-void frontSensorRR()
-{
-     
-   //Request sensorValue 
-    txObj.bF.id.ID = FRONT_SENS_REQ;         // standard identifier example
-    txObj.bF.ctrl.DLC = CAN_DLC_0;  // 0 bytes to send
-    txObj.bF.ctrl.RTR = 1;          // no remote frame
-    txObj.bF.id.SID11 = 0;          // only used in FD mode
-    txObj.bF.ctrl.FDF = 0;          // no CAN FD mode
-    txObj.bF.ctrl.IDE = 0;          // standard identifier format
-    txObj.bF.ctrl.BRS = 0;          // no data bitrate switch (FD mode)
-    txObj.bF.ctrl.ESI = 0;    
-    
-             CanSend(&txObj,txd);
-    while(CanReceive(&rxObj, rxtab)==1){}
-    myCar.sensor.frontSensor=(((uint16_t)rxtab[0]<<8)| rxtab[1]);  
-}
-
-void steeringWheelRR()
-{
-        txObj.bF.id.ID = STEERING_W_REQ;         // standard identifier example
-    txObj.bF.ctrl.DLC = CAN_DLC_0;  // 0 bytes to send
-    txObj.bF.ctrl.RTR = 1;          // no remote frame
-    txObj.bF.id.SID11 = 0;          // only used in FD mode
-    txObj.bF.ctrl.FDF = 0;          // no CAN FD mode
-    txObj.bF.ctrl.IDE = 0;          // standard identifier format
-    txObj.bF.ctrl.BRS = 0;          // no data bitrate switch (FD mode)
-    txObj.bF.ctrl.ESI = 0;    
-    
-             CanSend(&txObj,txd);
-    while(CanReceive(&rxObj, rxtab)==1){}
-    myCar.steeringValue=(int8_t)rxtab[0];  
-}
-
-void slopeValueRR()
-{
-            txObj.bF.id.ID = SLOPE_REQ;         // standard identifier example
-    txObj.bF.ctrl.DLC = CAN_DLC_0;  // 0 bytes to send
-    txObj.bF.ctrl.RTR = 1;          // no remote frame
-    txObj.bF.id.SID11 = 0;          // only used in FD mode
-    txObj.bF.ctrl.FDF = 0;          // no CAN FD mode
-    txObj.bF.ctrl.IDE = 0;          // standard identifier format
-    txObj.bF.ctrl.BRS = 0;          // no data bitrate switch (FD mode)
-    txObj.bF.ctrl.ESI = 0;    
-    
-             CanSend(&txObj,txd);
-    while(CanReceive(&rxObj, rxtab)==1){}
-    myCar.slopeValue=(int8_t)rxtab[0];  
-}
-
-
  //Method that set the light intensity (0 to 100) of the front and back lights 
-void setLight(uint8_t intensity, uint8_t Light_Type)//TO BE TESTED
+void setLight(uint8_t intensity, uint8_t Light_Type)//OK DONE
 {
     uint8_t last=0;
     
@@ -198,35 +144,6 @@ void setTimeInCockpit(uint8_t hours, uint8_t min, bool sec)//OK DONE
     txObj.bF.ctrl.BRS = 0;          // no data bitrate switch (FD mode)
     txObj.bF.ctrl.ESI = 0;
     CanSend(&txObj,txd);
-}
-
-void setGearLvl(uint8_t g) //TO BE TESTED
-{
-  uint8_t last = 0;
-  last=myCar.lastGearLevel;
-  char autoGear = myCar.gearSel;
-  
-  if(last!=g)
-  {
-      if((autoGear=='P')|(autoGear=='N')){
-          g=0;
-      }
-      if((autoGear=='R')&(g>1))
-      {
-          g=1;
-      }
-        txd[0]=g;
-    txObj.bF.id.ID = ((GEAR_LVL<<4)|myCar.carId);         // standard identifier example
-    txObj.bF.ctrl.DLC = CAN_DLC_1;  // 1 bytes to send
-    txObj.bF.ctrl.RTR = 0;          // no remote frame
-    txObj.bF.id.SID11 = 0;          // only used in FD mode
-    txObj.bF.ctrl.FDF = 0;          // no CAN FD mode
-    txObj.bF.ctrl.IDE = 0;          // standard identifier format
-    txObj.bF.ctrl.BRS = 0;          // no data bitrate switch (FD mode)
-    txObj.bF.ctrl.ESI = 0;
-    CanSend(&txObj,txd);
-    myCar.lastGearLevel=g;
-  }
 }
 
 
@@ -357,35 +274,6 @@ void carStateUpdate() //OK DONE
 }
 
 
-//-----------------------------------------------------------------------------TO BE COMPLETED----------------------------------/
-
-//Enables noise of motor
-//If motorDriven is set to 0, the noise will remain as slow speed
-//If motorDriven is set to 1, the noise will increase with the speed
-void setAudio(uint8_t volume, bool motorDriven)//TO BE TESTED
-{
-     uint8_t lastVolume = 0;
-  lastVolume =myCar.lastVolume;
-  
-  
-  
-  if(lastVolume!= volume)
-  {
-    txd[0]=volume;
-    txd[1]= motorDriven;
-    txObj.bF.id.ID = ((AUDIO<<4)|myCar.carId);         // standard identifier example
-    txObj.bF.ctrl.DLC = CAN_DLC_2;  // 1 bytes to send
-    txObj.bF.ctrl.RTR = 0;          // no remote frame
-    txObj.bF.id.SID11 = 0;          // only used in FD mode
-    txObj.bF.ctrl.FDF = 0;          // no CAN FD mode
-    txObj.bF.ctrl.IDE = 0;          // standard identifier format
-    txObj.bF.ctrl.BRS = 0;          // no data bitrate switch (FD mode)
-    txObj.bF.ctrl.ESI = 0;
-    CanSend(&txObj,txd);
-    myCar.lastVolume=volume;
-  } 
-}
-
 //Set PWR of the motor
 // pwr is 0-100
 //NOT UNDERSTAND : starter could not understand what this is dong here 
@@ -423,7 +311,7 @@ void lightsOnBrake()//OK DONE Could be improved with adaptive lights
     }
 }
 
-void setGas()
+void setGas()//OK DONE
 {
     uint8_t pwr = MAX(12,MIN(80,myCar.accelPedal));
     if(myCar.contactKey==1 && myCar.motorRpm>0)
@@ -435,16 +323,18 @@ void setGas()
     }   
 }
 
-void setBrake()
+void getBrake()//OK DONE
 {
      uint8_t pwr = myCar.brakePedal;
-    setPwrBrakes(pwr);
+     if(myCar.carSpeed>0){
+    setPwrBrakes(pwr);}
 }
     
 //Set pwr factor applied to brakes
-void setPwrBrakes(uint8_t pwr)
+void setPwrBrakes(uint8_t pwr)//OK DONE
 {
-        myCar.pwrBrake=pwr;
+    if(pwr!=myCar.pwrBrake){
+       myCar.pwrBrake=pwr;
     txd[0]=pwr;
     txObj.bF.id.ID = (((uint16_t)PWR_BRAKE)<<4|myCar.carId);         // standard identifier example
     txObj.bF.ctrl.DLC = CAN_DLC_1;  // 1 bytes to send
@@ -456,48 +346,11 @@ void setPwrBrakes(uint8_t pwr)
     txObj.bF.ctrl.ESI = 0;
     CanSend(&txObj,txd);
 }
-
-//Set tempomat off
-void setTempoOff() //to be impl. if brake are over x%, set it off
-{
 }
 
-//Pulse to be sent each 100m
-//NOT UNDERSTAND THIS MESSAGE
-void setKmPulse()
-{
-}
-        
-//Auto_steering
-void setSteeringPos(int8_t pos, bool automatic)
-{
-}
-
-//Reset Car (only for debug)
-void resetCarState()
-{
-}
-
-//get FRONT_SEN_REQ value
-uint16_t getFrontSenValue()
-{
-}
-
-//get steering Wheel REQ value
-int8_t getSteeringValue()
-{
-}
-
-//get Slope_REQ value
-int8_t getSlopeValue()
-{
-}
-
-
-   //Code to be implemented to control the car by the contoller
-void carControlUpdate()
-{
-    
+//Code to be implemented to control the car by the contoller
+void carControlUpdate()//OK DONE
+{  
     tenMillisecElapsed = 1;
     numMillisecElapsed+=1;
     if(numMillisecElapsed%5==0){
@@ -529,3 +382,197 @@ void engineAtStart() //OK DONE
 
     }
 }
+
+//-----------------------------------------------------------------------------TO BE COMPLETED----------------------------------/
+
+void driveAtStart()
+{
+    if(myCar.gearSel=='D' && myCar.carSpeed==0 && myCar.accelPedal<2)
+    {
+        setPwrBrakes(100);
+    }
+}
+
+void driveInDrive()
+{
+    if(myCar.accelPedal>=2 && myCar.gearSel=='D')
+    {
+        
+        //if(myCar.lastGearLevel==0)
+       // {
+        //    setGearLvl(1);
+       // }
+        uint8_t actGear = myCar.lastGearLevel;
+        if(myCar.motorRpm>6500 && myCar.lastGearLevel<5)
+        {
+        actGear+=1;
+        setGearLvl(actGear);
+        
+        }
+        else if(myCar.motorRpm<2000 && myCar.lastGearLevel>1)
+        {
+        actGear-=1;
+        setGearLvl(actGear);
+        }
+        //myCar.lastGearLevel=actGear;
+    }
+}
+
+void reverseMode()
+{
+    /*
+    if(myCar.gearSel=='R'){
+    if( myCar.carSpeed==0 && myCar.accelPedal<2)
+    {
+        setPwrBrakes(100);
+    }
+    else if(myCar.accelPedal>=2)
+    {
+        setGearLvl(1);
+    }
+    else if(myCar.motorRpm<2000 && myCar.carSpeed==0)
+    {
+            setGearLvl(0);
+    }
+    }*/
+}
+
+void setGearLvl(uint8_t g) //TO BE TESTED
+{
+  uint8_t last = 0;
+  last=myCar.lastGearLevel;
+  char autoGear = myCar.gearSel;
+  
+  if(last!=g)
+  {
+      if((autoGear=='P')||(autoGear=='N')){
+          g=0;
+      }
+        if((autoGear=='R')){
+          g=1;
+      }
+      
+        txd[0]=g;
+    txObj.bF.id.ID = ((GEAR_LVL<<4)|myCar.carId);         // standard identifier example
+    txObj.bF.ctrl.DLC = CAN_DLC_1;  // 1 bytes to send
+    txObj.bF.ctrl.RTR = 0;          // no remote frame
+    txObj.bF.id.SID11 = 0;          // only used in FD mode
+    txObj.bF.ctrl.FDF = 0;          // no CAN FD mode
+    txObj.bF.ctrl.IDE = 0;          // standard identifier format
+    txObj.bF.ctrl.BRS = 0;          // no data bitrate switch (FD mode)
+    txObj.bF.ctrl.ESI = 0;
+    CanSend(&txObj,txd);
+    myCar.lastGearLevel=g;
+  }
+}
+
+//Enables noise of motor
+//If motorDriven is set to 0, the noise will remain as slow speed
+//If motorDriven is set to 1, the noise will increase with the speed
+void setAudio(uint8_t volume, bool motorDriven)//TO BE TESTED
+{
+     uint8_t lastVolume = 0;
+  lastVolume =myCar.lastVolume;
+  
+  
+  
+  if(lastVolume!= volume)
+  {
+    txd[0]=volume;
+    txd[1]= motorDriven;
+    txObj.bF.id.ID = ((AUDIO<<4)|myCar.carId);         // standard identifier example
+    txObj.bF.ctrl.DLC = CAN_DLC_2;  // 1 bytes to send
+    txObj.bF.ctrl.RTR = 0;          // no remote frame
+    txObj.bF.id.SID11 = 0;          // only used in FD mode
+    txObj.bF.ctrl.FDF = 0;          // no CAN FD mode
+    txObj.bF.ctrl.IDE = 0;          // standard identifier format
+    txObj.bF.ctrl.BRS = 0;          // no data bitrate switch (FD mode)
+    txObj.bF.ctrl.ESI = 0;
+    CanSend(&txObj,txd);
+    myCar.lastVolume=volume;
+  } 
+}
+
+ //Request value of RR fields
+//FRONT_SENS_REQ
+void frontSensorRR()//TO BE TESTED
+{
+     
+   //Request sensorValue 
+    txObj.bF.id.ID = FRONT_SENS_REQ;         // standard identifier example
+    txObj.bF.ctrl.DLC = CAN_DLC_0;  // 0 bytes to send
+    txObj.bF.ctrl.RTR = 1;          // no remote frame
+    txObj.bF.id.SID11 = 0;          // only used in FD mode
+    txObj.bF.ctrl.FDF = 0;          // no CAN FD mode
+    txObj.bF.ctrl.IDE = 0;          // standard identifier format
+    txObj.bF.ctrl.BRS = 0;          // no data bitrate switch (FD mode)
+    txObj.bF.ctrl.ESI = 0;    
+    
+             CanSend(&txObj,txd);
+    while(CanReceive(&rxObj, rxtab)==1){}
+    myCar.sensor.frontSensor=(((uint16_t)rxtab[0]<<8)| rxtab[1]);  
+}
+
+void steeringWheelRR()//TO BE TESTED
+{
+        txObj.bF.id.ID = STEERING_W_REQ;         // standard identifier example
+    txObj.bF.ctrl.DLC = CAN_DLC_0;  // 0 bytes to send
+    txObj.bF.ctrl.RTR = 1;          // no remote frame
+    txObj.bF.id.SID11 = 0;          // only used in FD mode
+    txObj.bF.ctrl.FDF = 0;          // no CAN FD mode
+    txObj.bF.ctrl.IDE = 0;          // standard identifier format
+    txObj.bF.ctrl.BRS = 0;          // no data bitrate switch (FD mode)
+    txObj.bF.ctrl.ESI = 0;    
+    
+             CanSend(&txObj,txd);
+    while(CanReceive(&rxObj, rxtab)==1){}
+    myCar.steeringValue=(int8_t)rxtab[0];  
+}
+
+void slopeValueRR()//TO BE Tested
+{
+            txObj.bF.id.ID = SLOPE_REQ;         // standard identifier example
+    txObj.bF.ctrl.DLC = CAN_DLC_0;  // 0 bytes to send
+    txObj.bF.ctrl.RTR = 1;          // no remote frame
+    txObj.bF.id.SID11 = 0;          // only used in FD mode
+    txObj.bF.ctrl.FDF = 0;          // no CAN FD mode
+    txObj.bF.ctrl.IDE = 0;          // standard identifier format
+    txObj.bF.ctrl.BRS = 0;          // no data bitrate switch (FD mode)
+    txObj.bF.ctrl.ESI = 0;    
+    
+             CanSend(&txObj,txd);
+    while(CanReceive(&rxObj, rxtab)==1){}
+    myCar.slopeValue=(int8_t)rxtab[0];  
+}
+
+
+//Set tempomat off
+void setTempoOff() //to be impl. if brake are over x%, set it off
+{
+}
+
+//Pulse to be sent each 100m
+//NOT UNDERSTAND THIS MESSAGE
+void setKmPulse()
+{}
+        
+//Auto_steering
+void setSteeringPos(int8_t pos, bool automatic)
+{
+}
+
+//Reset Car (only for debug)
+void resetCarState()
+{}
+
+//get FRONT_SEN_REQ value
+uint16_t getFrontSenValue()
+{}
+
+//get steering Wheel REQ value
+int8_t getSteeringValue()
+{}
+
+//get Slope_REQ value
+int8_t getSlopeValue()
+{}
