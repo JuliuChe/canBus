@@ -54,6 +54,8 @@ extern uint8_t numMillisecElapsed;
 extern uint8_t fiftyMillisecElapsed;
 extern uint8_t hour, min, sec;
 extern uint8_t  numSecElapsed, SecElapsed;
+extern uint8_t inc;
+extern uint8_t maxpwr;
 
 extern CAN_FILTEROBJ_ID fObj;
  extern CAN_MASKOBJ_ID mObj;
@@ -89,6 +91,10 @@ extern CAN_FILTEROBJ_ID fObj;
       int8_t slopeValue; // -100 to +100 has to be requested by controller
       mode race;
       uint8_t carId;
+      uint16_t tempoSpeed; 
+      
+    
+   
       
       //Value to be saved until next interrupt
       uint8_t lastFrontLightInt;
@@ -98,6 +104,12 @@ extern CAN_FILTEROBJ_ID fObj;
       bool lastContactKey;
       uint8_t pwr;
       uint8_t pwrBrake;
+      uint8_t lastRpm;
+      uint8_t lastTempo;
+      uint8_t statusChanged;
+      uint8_t powerOnStart;
+      uint16_t odometer;
+      uint8_t gearChanged;
      
   }CAR_STATE;
   
@@ -178,9 +190,11 @@ void controlTime();
 void driveAtStart();
 void driveInDrive();
 void reverseMode();
-
-
-
+void setSpeed(uint16_t speed);
+void tempoOn();
+void getDistance();
+void resetBrokenCar();
+void regulationMethod();
 
 
 

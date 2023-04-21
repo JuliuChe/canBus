@@ -104,6 +104,13 @@ void main(void)
     {
         
         carStateUpdate();
+        
+           if(myCar.gearChanged==1)
+        {
+            regulationMethod();
+            myCar.gearChanged=0;
+        }
+            
         //setAudio(100, 0);
         
         
@@ -133,11 +140,10 @@ void main(void)
        }*/
         if(tenMillisecElapsed==1){            
             lightsOnBrake();
-            tenMillisecElapsed = 0;
             getBrake();
-            reverseMode();
             driveAtStart();
-            driveInDrive();
+            setGas();
+            tenMillisecElapsed = 0;
             
           
         }
@@ -145,7 +151,12 @@ void main(void)
         if (fiftyMillisecElapsed == 1)
         {
             engineAtStart();
-            setGas();
+                     
+            reverseMode();
+  
+            driveInDrive();
+            tempoOn();
+            getDistance();
             fiftyMillisecElapsed = 0;
         }
         
@@ -153,7 +164,13 @@ void main(void)
             controlTime();
             SecElapsed=0;
         }
-                
+        
+        if(myCar.brokenCar!=NO_ERROR)
+        {
+            resetBrokenCar();
+        }
+        
+         
     }
 }
 /**
