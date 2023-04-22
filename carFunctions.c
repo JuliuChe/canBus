@@ -326,8 +326,7 @@ void setGas()//OK DONE
     static uint8_t pwr = 10;
      // uint8_t  inc = 5;
     //uint8_t set=myCar.accelPedal
-    if (!myCar.tempomat)
-    {
+  
         if (myCar.accelPedal > (pwr))
         {
             pwr += inc;
@@ -353,7 +352,7 @@ void setGas()//OK DONE
             setPwrMotor(MAX(MIN(maxpwr, pwr), myCar.powerOnStart), 0);
             myCar.statusChanged = 0;
         }
-    }
+    
     /* if (!myCar.tempomat)
      {
          uint8_t pwr = MAX(12, MIN(80, myCar.accelPedal));
@@ -385,7 +384,6 @@ void getBrake()//OK DONE
         if (myCar.carSpeed != 0)
         {
             setPwrBrakes(pwr);
-            setPwrMotor(0, 0);
         }
     }
 }
@@ -414,15 +412,21 @@ void setPwrBrakes(uint8_t pwr)//OK DONE
 
 void carControlUpdate()//OK DONE
 {
-    tenMillisecElapsed = 1;
+    static uint8_t countSec=0;
+    countSec+=1;
+    
     numMillisecElapsed += 1;
-    if (numMillisecElapsed % 5 == 0)
+    
+    tenMillisecElapsed = 1;
+    
+    if (numMillisecElapsed == 5)
     {
         fiftyMillisecElapsed = 1;
+        numMillisecElapsed =0;
     }
-    if (numMillisecElapsed % 100 == 0)
+    if (countSec == 100)
     {
-        numMillisecElapsed = 0;
+        countSec = 0;
         SecElapsed = 1;
     }
 
@@ -514,15 +518,38 @@ void setGearLvl(uint8_t g) //OK
 
 void setSpeed(uint16_t speed)//OK DONE
 {
+    int8_t diff=(int8_t)(myCar.carSpeed-speed);
+    uint8_t set=0;
+    
+    if(diff<0)
+    {
+        diff=-diff;
+    }
+    
+    if(diff>50)
+    {
+        set=15;
+    }
+    else if(diff>20)
+    {
+        set=5;
+    }
+    else if(diff>5)
+    {
+        set= 3;
+    }
+    else (set = 2);
+    
+            
     if (myCar.carSpeed <= 275)
     {
         if (myCar.carSpeed > speed)
         {
-            setPwrMotor(MAX(myCar.accelPedal, myCar.pwr - 1), 0);
+            setPwrMotor(MAX(myCar.accelPedal, myCar.pwr - set), 0);
         }
         else if (myCar.carSpeed < speed)
         {
-            setPwrMotor(MAX(myCar.accelPedal, myCar.pwr + 1), 0);
+            setPwrMotor(MAX(myCar.accelPedal, myCar.pwr + set), 0);
         }
     }
     else
