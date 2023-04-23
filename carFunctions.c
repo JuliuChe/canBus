@@ -52,18 +52,23 @@ void carStateInit()//OK DONE
     slopeValueRR();
     myCar.race = NOT_IN_RACE;
 
+    myCar.newSensorValue = 0;
     //Value to be saved until next interrupt
+    myCar.sensor.ext_sensor.frontLeftS = 63;
+    myCar.sensor.ext_sensor.frontRightS = 63;
     myCar.lastFrontLightInt = 0;
     myCar.lastBackLightInt = 0;
     myCar.lastGearLevel = 0;
     myCar.lastVolume = 0;
     myCar.lastContactKey = 0;
+    myCar.pwrBrake = 0;
     myCar.pwr = 0;
-    myCar.lastRpm = 0;
-    myCar.lastTempo = 0;
     myCar.powerOnStart = 10;
     myCar.odometer = 0;
     myCar.gearChanged = 1;
+    myCar.statusChanged = 0;
+    myCar.carStop = 0;
+    myCar.drive = 0;
 }
 //Method that set the light intensity (0 to 100) of the front and back lights 
 
@@ -92,7 +97,6 @@ void setLight(uint8_t intensity, uint8_t Light_Type)//OK DONE
         txObj.bF.ctrl.BRS = 0; // no data bitrate switch (FD mode)
         txObj.bF.ctrl.ESI = 0;
         CanSend(&txObj, txd);
-
     }
 
     if (Light_Type == LIGHT_FRONT)
@@ -219,12 +223,15 @@ void carStateUpdate() //OK DONE
         case EXT_SENSORS:
             if (myCar.race == NOT_IN_RACE)
             {
+                frontSensorRR();
+                //myCar.newSensorValue
                 myCar.sensor.frontSensor = ((((uint16_t) rxtab[0]) << 8) | rxtab[1]); //Be careful with operators' precedence, parenthesis and typecast added 
             }
             else
             {
                 myCar.sensor.ext_sensor.frontLeftS = rxtab[0];
                 myCar.sensor.ext_sensor.frontRightS = rxtab[1];
+                myCar.newSensorValue = 1;
             }
             break;
 
@@ -324,69 +331,80 @@ void lightsOnBrake()//OK DONE Could be improved with adaptive lights
 void setGas()//OK DONE
 {
     static uint8_t pwr = 10;
-     // uint8_t  inc = 5;
+    // uint8_t  inc = 5;
     //uint8_t set=myCar.accelPedal
-  
-        if (myCar.accelPedal > (pwr))
+    if (myCar.carStop == 0)
+    {
+
+        if (myCar.tempomat == 0 || myCar.accelPedal > 10)
         {
-            pwr += inc;
+            if (myCar.motorRpm > 0)
+            {
+                if (myCar.accelPedal > (pwr))
+                {
+                    pwr += inc;
+                }
+                else if ((myCar.accelPedal < pwr) && (myCar.pwr > myCar.powerOnStart))
+                {
+                    pwr -= inc;
+                }
+
+
+                if (((myCar.motorRpm > 7400) || (myCar.carSpeed > 275))&& (myCar.pwr > myCar.powerOnStart))
+                {
+                    if (pwr > (inc + inc))
+                    {
+                        pwr -= (inc + inc);
+                    }
+                    else
+                    {
+                        pwr = myCar.powerOnStart;
+                    }
+                }
+                //if (myCar.statusChanged == 1)
+                //{
+                setPwrMotor(MAX(MIN(maxpwr, pwr), myCar.powerOnStart), 0);
+                //    myCar.statusChanged = 0;
+                //}
+            }
         }
-        else if ((myCar.accelPedal < pwr) && (myCar.pwr > myCar.powerOnStart))
+    }
+    /*if (!myCar.tempomat)
+    {
+        uint8_t pwr = MAX(12, MIN(80, myCar.accelPedal));
+        if (myCar.carSpeed < 275)
         {
-            pwr -= inc;
+            if (myCar.contactKey == 1 && myCar.motorRpm > 0)
+            {
+                if (pwr != myCar.pwr)
+                {
+                    setPwrMotor(pwr, 0);
+                }
+            }
+        }
+        else
+        {
+            setPwrMotor(0, 0);
+            //setPwrBrakes(20);
+            //setPwrMotor(MIN(12,myCar.accelPedal),0);
         }
 
-        if (((myCar.motorRpm > 7400) || (myCar.carSpeed > 275))&& (myCar.pwr > myCar.powerOnStart))
-        {
-            if (pwr > (2 * inc))
-            {
-                pwr -= (2 * inc);
-            }
-            else
-            {
-                pwr = myCar.powerOnStart;
-            }
-        }
-        if (myCar.statusChanged == 1)
-        {
-            setPwrMotor(MAX(MIN(maxpwr, pwr), myCar.powerOnStart), 0);
-            myCar.statusChanged = 0;
-        }
-    
-    /* if (!myCar.tempomat)
-     {
-         uint8_t pwr = MAX(12, MIN(80, myCar.accelPedal));
-         if (myCar.carSpeed < 275)
-         {
-             if (myCar.contactKey == 1 && myCar.motorRpm > 0)
-             {
-                 if (pwr != myCar.pwr)
-                 {
-                     setPwrMotor(pwr, 0);
-                 }
-             }
-         }
-         else
-         {
-             setPwrMotor(0, 0);
-             //setPwrBrakes(20);
-             //setPwrMotor(MIN(12,myCar.accelPedal),0);
-         }
-
-     }*/
+    }*/
 }
 
 void getBrake()//OK DONE
 {
     uint8_t pwr = myCar.brakePedal;
+    //if(myCar.carSpeed!=0 && pwr!=0){
     if ((myCar.lastGearLevel > 0) || (myCar.gearSel == 'N'))
     {
-        if (myCar.carSpeed != 0)
+        if (myCar.carSpeed != 0) //can be a negative or positive speed
         {
             setPwrBrakes(pwr);
         }
     }
 }
+//}
 
 //Set pwr factor applied to brakes
 
@@ -412,17 +430,17 @@ void setPwrBrakes(uint8_t pwr)//OK DONE
 
 void carControlUpdate()//OK DONE
 {
-    static uint8_t countSec=0;
-    countSec+=1;
-    
+    static uint8_t countSec = 0;
+
+    countSec += 1;
     numMillisecElapsed += 1;
-    
+
     tenMillisecElapsed = 1;
-    
+
     if (numMillisecElapsed == 5)
     {
         fiftyMillisecElapsed = 1;
-        numMillisecElapsed =0;
+        numMillisecElapsed = 0;
     }
     if (countSec == 100)
     {
@@ -434,7 +452,7 @@ void carControlUpdate()//OK DONE
 
 }
 
-void engineAtStart() //OK DONE
+void engineAtKeyEvt() //OK DONE
 {
 
     if (myCar.motorRpm == 0 && myCar.contactKey == 1 && myCar.lastContactKey == 0)
@@ -449,22 +467,36 @@ void engineAtStart() //OK DONE
     {
         setPwrMotor(0, 0);
         myCar.motorRpm = 0;
+        myCar.carSpeed = 0;
         myCar.lastContactKey = 0;
         setLight(0, LIGHT_FRONT);
         setLight(0, LIGHT_BACK);
         setGearLvl(0);
-        myCar.odometer=0;
-        myCar.carSpeed=0;
+        setPwrBrakes(100);
+        myCar.gearSel = 'P';
+        myCar.statusChanged = 0;
+        myCar.brokenCar = NO_ERROR;
+        myCar.badMessage = NO_MSG_ERROR;
+        myCar.race = NOT_IN_RACE;
+        myCar.odometer = 0;
+        myCar.gearChanged = 1;
+        myCar.carStop = 0;
+
     }
 }
 
 void driveAtStart() //OK
 {
-    if (((myCar.gearSel == 'D') || (myCar.gearSel == 'R')) && myCar.lastGearLevel == 0 && myCar.accelPedal < 2)
+    //in the if statement && ((myCar.carSpeed<5)&&myCar.carSpeed>-5)
+    if (((myCar.gearSel == 'D') || (myCar.gearSel == 'R')) && (myCar.lastGearLevel == 0) && (myCar.accelPedal < 10))
     {
         setPwrBrakes(100);
     }
-   
+    else if ((myCar.gearSel == 'N')&& (myCar.brakePedal < 5))
+    {
+        setPwrBrakes(0);
+    }
+
 }
 
 void driveInDrive() //OK
@@ -473,9 +505,12 @@ void driveInDrive() //OK
     {
         if (myCar.lastGearLevel == 0)
         {
-            if (myCar.motorRpm > 1300)
+            if (myCar.motorRpm > 1300 && myCar.drive == 0)
             {
                 setGearLvl(myCar.lastGearLevel + 1);
+                myCar.motorRpm = 2500;
+                myCar.drive = 1;
+
             }
         }
         if (myCar.motorRpm > 5000)
@@ -492,6 +527,10 @@ void driveInDrive() //OK
             {
                 setGearLvl(myCar.lastGearLevel - 1);
                 myCar.motorRpm = 2500;
+                if (myCar.lastGearLevel == 0)
+                {
+                    myCar.drive = 0;
+                }
             }
         }
     }
@@ -518,43 +557,49 @@ void setGearLvl(uint8_t g) //OK
 
 void setSpeed(uint16_t speed)//OK DONE
 {
-    int8_t diff=(int8_t)(myCar.carSpeed-speed);
-    uint8_t set=0;
-    
-    if(diff<0)
+    int8_t diff = (int8_t) (speed - myCar.carSpeed);
+    static uint8_t set = 0;
+    if (diff < 0)
     {
-        diff=-diff;
+        diff = -diff;
     }
-    
-    if(diff>50)
+    if (diff > 15)
     {
-        set=15;
+        set = 15;
     }
-    else if(diff>20)
+    else if (diff > 10)
     {
-        set=5;
+        set = 10;
     }
-    else if(diff>5)
+    else if (diff > 5)
     {
-        set= 3;
+        set = 5;
     }
-    else (set = 2);
-    
-            
-    if (myCar.carSpeed <= 275)
+    else
     {
-        if (myCar.carSpeed > speed)
+        set = 1;
+    }
+    if (myCar.accelPedal < 50)
+    {
+        if (myCar.carSpeed <= 275)
         {
-            setPwrMotor(MAX(myCar.accelPedal, myCar.pwr - set), 0);
+            if (myCar.carSpeed > speed)
+            {
+                setPwrMotor(MIN(MAX(0, myCar.pwr - set), 100), 0);
+            }
+            else if (myCar.carSpeed < speed)
+            {
+                setPwrMotor(MAX(MIN(100, myCar.pwr + set), 0), 0);
+            }
         }
-        else if (myCar.carSpeed < speed)
+        else
         {
-            setPwrMotor(MAX(myCar.accelPedal, myCar.pwr + set), 0);
+            setPwrBrakes(20);
         }
     }
     else
     {
-        setPwrBrakes(20);
+        setGas();
     }
 }
 
@@ -580,17 +625,20 @@ void tempoOn()//OK DONE
 
 void setTempoOff() //OK Done
 {
-    txd[0] = 0;
-    txObj.bF.id.ID = (((uint16_t) TEMPO_OFF) << 4 | myCar.carId); // standard identifier example
-    txObj.bF.ctrl.DLC = CAN_DLC_0; // 0 bytes to send
-    txObj.bF.ctrl.RTR = 0; // no remote frame
-    txObj.bF.id.SID11 = 0; // only used in FD mode
-    txObj.bF.ctrl.FDF = 0; // no CAN FD mode
-    txObj.bF.ctrl.IDE = 0; // standard identifier format
-    txObj.bF.ctrl.BRS = 0; // no data bitrate switch (FD mode)
-    txObj.bF.ctrl.ESI = 0;
-    CanSend(&txObj, 0);
-    myCar.tempomat = 0;
+    if (myCar.tempomat == 1)
+    {
+        txd[0] = 0;
+        txObj.bF.id.ID = (((uint16_t) TEMPO_OFF) << 4 | myCar.carId); // standard identifier example
+        txObj.bF.ctrl.DLC = CAN_DLC_0; // 0 bytes to send
+        txObj.bF.ctrl.RTR = 0; // no remote frame
+        txObj.bF.id.SID11 = 0; // only used in FD mode
+        txObj.bF.ctrl.FDF = 0; // no CAN FD mode
+        txObj.bF.ctrl.IDE = 0; // standard identifier format
+        txObj.bF.ctrl.BRS = 0; // no data bitrate switch (FD mode)
+        txObj.bF.ctrl.ESI = 0;
+        CanSend(&txObj, 0);
+        myCar.tempomat = 0;
+    }
 }
 
 //Pulse to be sent each 100m
@@ -623,22 +671,12 @@ void getDistance() //OK DONE
     setKmPulse();
 }
 
-void resetBrokenCar() // OK DONE
-{
-    if (myCar.brokenCar != NO_ERROR)
-    {
-        carStateInit();
-    }
-
-}
-
-
 void reverseMode()//OK DONE
 {
 
     if (myCar.gearSel == 'R')
     {
-        if (myCar.accelPedal >= 2)
+        if (myCar.accelPedal > 10 && myCar.carStop == 0)
         {
             setGearLvl(1);
         }
@@ -649,22 +687,135 @@ void reverseMode()//OK DONE
     }
 }
 
-void regulationMethod()
+void regulationMethod()//OK DONE
 {
 
     if (myCar.gearSel == 'P' || myCar.gearSel == 'N')
     {
-        inc=10;
+        inc = 10;
         maxpwr = 80;
     }
     else
     {
-        inc=5;
+        inc = 5;
         maxpwr = 100;
     }
 }
 
+void startAndStop()//OK DONE
+{
+    if (myCar.race == NOT_IN_RACE)
+    {
+        if ((myCar.carSpeed == 0) &&(myCar.accelPedal < 5)&&(myCar.lastGearLevel == 0) &&(myCar.brakePedal > 10))
+        {
+            setPwrMotor(0, 0);
+            myCar.carStop = 1;
+        }
+
+        if ((myCar.carStop == 1)&&(myCar.accelPedal > 10))
+        {
+            setPwrMotor(myCar.powerOnStart, 1);
+            setGearLvl(0);
+            myCar.carStop = 0;
+        }
+    }
+}
+
 //-----------------------------------------------------------------------------TO BE COMPLETED----------------------------------/
+
+void resetBrokenCar() // OK DONE
+{
+    if (myCar.brokenCar != NO_ERROR)
+    {
+        carStateInit();
+        resetCarState();
+    }
+
+}
+
+void brakeAccelConciliation()
+{
+    if (myCar.gearSel == 'R' || myCar.gearSel == 'D')
+    {
+        if (myCar.lastGearLevel > 0)
+        {
+            if (myCar.brakePedal > 10)
+            {
+                if (myCar.accelPedal > 10)
+                {
+                    myCar.accelPedal = 0;
+                }
+            }
+        }
+
+    }
+
+}
+
+
+//FROM CAR TO CONTROLLER
+//get steering Wheel REQ value
+
+//FROM CONTROLLER TO CAR
+//Auto_steering
+
+void setSteeringPos(int8_t pos, bool automatic)
+{
+    if (pos != myCar.steeringValue)
+    {
+        txd[0] = pos;
+        txd[1] = automatic;
+        txObj.bF.id.ID = ((AUTO_STEERING << 4) | myCar.carId); // standard identifier example
+        txObj.bF.ctrl.DLC = CAN_DLC_2; // 2 bytes to send
+        txObj.bF.ctrl.RTR = 0; // no remote frame
+        txObj.bF.id.SID11 = 0; // only used in FD mode
+        txObj.bF.ctrl.FDF = 0; // no CAN FD mode
+        txObj.bF.ctrl.IDE = 0; // standard identifier format
+        txObj.bF.ctrl.BRS = 0; // no data bitrate switch (FD mode)
+        txObj.bF.ctrl.ESI = 0;
+        CanSend(&txObj, txd);
+        myCar.steeringValue = pos;
+    }
+}
+
+void raceMode()
+{
+    if (myCar.race == READY_RACE)
+    {
+        setSteeringPos(0, 1);
+    }
+    else
+    {
+        if (myCar.newSensorValue == 1)
+        {
+            myCar.newSensorValue = 0;
+            if (myCar.lastGearLevel > 0)
+            {
+
+                if ((myCar.sensor.ext_sensor.frontLeftS < 25) || (myCar.sensor.ext_sensor.frontRightS < 25))
+                {
+                    if ((myCar.sensor.ext_sensor.frontLeftS < myCar.sensor.ext_sensor.frontRightS))
+                    {
+                        setSteeringPos(myCar.steeringValue + 5 , 1);
+                    }
+                    else
+                    {
+                        setSteeringPos(myCar.steeringValue - 5, 1);
+                    }
+                }
+                else
+                {
+                    setSteeringPos(0, 1);
+                }
+            }
+        }
+        else
+                {
+                    setSteeringPos(0, 1);
+                }
+    }
+}
+
 
 
 //Enables noise of motor
@@ -704,7 +855,8 @@ void frontSensorRR()//TO BE TESTED
 {
 
     //Request sensorValue 
-    txObj.bF.id.ID = FRONT_SENS_REQ; // standard identifier example
+    txObj.bF.id.ID = ((FRONT_SENS_REQ << 4) | myCar.carId);
+    ; // standard identifier example
     txObj.bF.ctrl.DLC = CAN_DLC_0; // 0 bytes to send
     txObj.bF.ctrl.RTR = 1; // no remote frame
     txObj.bF.id.SID11 = 0; // only used in FD mode
@@ -714,16 +866,17 @@ void frontSensorRR()//TO BE TESTED
     txObj.bF.ctrl.ESI = 0;
 
     CanSend(&txObj, txd);
-    while (CanReceive(&rxObj, rxtab) == 1)
+    /*while (CanReceive(&rxObj, rxtab) == 1)
     {
     }
     myCar.sensor.frontSensor = (((uint16_t) rxtab[0] << 8) | rxtab[1]);
+     */
 }
 
 void steeringWheelRR()//TO BE TESTED
 {
-    txObj.bF.id.ID = STEERING_W_REQ; // standard identifier example
-    txObj.bF.ctrl.DLC = CAN_DLC_0; // 0 bytes to send
+    txObj.bF.id.ID = ((STEERING_W_REQ << 4) | myCar.carId); // standard identifier example
+    txObj.bF.ctrl.DLC = CAN_DLC_1; // 1 bytes to send
     txObj.bF.ctrl.RTR = 1; // no remote frame
     txObj.bF.id.SID11 = 0; // only used in FD mode
     txObj.bF.ctrl.FDF = 0; // no CAN FD mode
@@ -758,15 +911,22 @@ void slopeValueRR()//TO BE Tested
 
 
 
-//Auto_steering
 
-void setSteeringPos(int8_t pos, bool automatic)
-{
-}
 
 //Reset Car (only for debug)
-void resetCarState()
+
+void resetCarState() //OK DONE
 {
+    txObj.bF.id.ID = (((uint16_t) CAR_RST) << 4 | myCar.carId); // standard identifier example
+    txObj.bF.ctrl.DLC = CAN_DLC_0; // 0 bytes to send
+    txObj.bF.ctrl.RTR = 0; // no remote frame
+    txObj.bF.id.SID11 = 0; // only used in FD mode
+    txObj.bF.ctrl.FDF = 0; // no CAN FD mode
+    txObj.bF.ctrl.IDE = 0; // standard identifier format
+    txObj.bF.ctrl.BRS = 0; // no data bitrate switch (FD mode)
+    txObj.bF.ctrl.ESI = 0;
+    CanSend(&txObj, 0);
+
 }
 
 //get FRONT_SEN_REQ value
@@ -775,17 +935,12 @@ uint16_t getFrontSenValue()
 {
 }
 
-//get steering Wheel REQ value
 
-int8_t getSteeringValue()
-{
-}
 
 //get Slope_REQ value
 
 int8_t getSlopeValue()
 {
-    
-}
 
+}
 

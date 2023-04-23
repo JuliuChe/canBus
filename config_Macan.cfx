@@ -2,7 +2,7 @@
 <BUSMASTER_CONFIGURATION>
   <Global_Configuration>
     <BUSMASTER_Version>3.2.2</BUSMASTER_Version>
-    <IsMsgFilterEnabled>TRUE</IsMsgFilterEnabled>
+    <IsMsgFilterEnabled>FALSE</IsMsgFilterEnabled>
     <IsMsgFilterEnabledLin>FALSE</IsMsgFilterEnabledLin>
     <IsReplayFilterEnabled>FALSE</IsReplayFilterEnabled>
     <IsLogFilterEnabled>FALSE</IsLogFilterEnabled>
@@ -27,6 +27,7 @@
   <Module_Configuration>
     <CAN_Database_Files>
       <FilePath>porscheMacan_Signals_#3.DBF</FilePath>
+      <FilePath>porscheMacan_Signals_#4.DBF</FilePath>
     </CAN_Database_Files>
     <J1939_Database_Files/>
     <CAN_DIL_Section>
@@ -275,7 +276,7 @@
         <ID>Data Byte(s)</ID>
         <Order>9</Order>
         <IsVisible>1</IsVisible>
-        <Width>940</Width>
+        <Width>699</Width>
       </COLUMN>
       <IsHex>1</IsHex>
       <IsAppend>1</IsAppend>
@@ -292,10 +293,10 @@
       <Interpretation_Window_Position>
         <Visibility>SHOWNORMAL</Visibility>
         <WindowPlacement>RESTORETOMAXIMIZED</WindowPlacement>
-        <Top>181</Top>
-        <Left>18</Left>
-        <Bottom>459</Bottom>
-        <Right>367</Right>
+        <Top>183</Top>
+        <Left>11</Left>
+        <Bottom>461</Bottom>
+        <Right>360</Right>
       </Interpretation_Window_Position>
     </CAN_Message_Window>
     <J1939_Message_Window>
@@ -375,14 +376,14 @@
         <ID>Data Byte(s)</ID>
         <Order>13</Order>
         <IsVisible>1</IsVisible>
-        <Width>694</Width>
+        <Width>25</Width>
       </COLUMN>
       <IsHex>1</IsHex>
       <IsAppend>1</IsAppend>
       <IsInterpret>0</IsInterpret>
       <Time_Mode>SYSTEM</Time_Mode>
       <Window_Position>
-        <Visibility>SHOWNORMAL</Visibility>
+        <Visibility>SHOWMINIMIZED</Visibility>
         <WindowPlacement>SETMINPOSITION</WindowPlacement>
         <Top>0</Top>
         <Left>0</Left>
@@ -392,10 +393,10 @@
       <Interpretation_Window_Position>
         <Visibility>SHOWNORMAL</Visibility>
         <WindowPlacement>RESTORETOMAXIMIZED</WindowPlacement>
-        <Top>181</Top>
-        <Left>18</Left>
-        <Bottom>459</Bottom>
-        <Right>367</Right>
+        <Top>183</Top>
+        <Left>11</Left>
+        <Bottom>461</Bottom>
+        <Right>360</Right>
       </Interpretation_Window_Position>
     </J1939_Message_Window>
     <LIN_Message_Window>
@@ -477,10 +478,10 @@
       <Interpretation_Window_Position>
         <Visibility>SHOWNORMAL</Visibility>
         <WindowPlacement>RESTORETOMAXIMIZED</WindowPlacement>
-        <Top>181</Top>
-        <Left>18</Left>
-        <Bottom>459</Bottom>
-        <Right>367</Right>
+        <Top>183</Top>
+        <Left>11</Left>
+        <Bottom>461</Bottom>
+        <Right>360</Right>
       </Interpretation_Window_Position>
     </LIN_Message_Window>
     <CAN_Tx_Window>

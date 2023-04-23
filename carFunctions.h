@@ -92,8 +92,8 @@ extern CAN_FILTEROBJ_ID fObj;
       mode race;
       uint8_t carId;
       uint16_t tempoSpeed; 
-      
-    
+      uint8_t newSensorValue;
+      uint8_t carStop;
    
       
       //Value to be saved until next interrupt
@@ -104,12 +104,11 @@ extern CAN_FILTEROBJ_ID fObj;
       bool lastContactKey;
       uint8_t pwr;
       uint8_t pwrBrake;
-      uint8_t lastRpm;
-      uint8_t lastTempo;
       uint8_t statusChanged;
       uint8_t powerOnStart;
       uint16_t odometer;
       uint8_t gearChanged;
+      uint8_t drive;
      
   }CAR_STATE;
   
@@ -183,7 +182,7 @@ int8_t getSteeringValue();
 //get Slope_REQ value
 int8_t getSlopeValue();
 
-void engineAtStart();
+void engineAtKeyEvt();
 void lightsOnBrake();
 void setGas();
 void controlTime();
@@ -195,8 +194,9 @@ void tempoOn();
 void getDistance();
 void resetBrokenCar();
 void regulationMethod();
-
-
+void raceMode();
+void startAndStop();
+void brakeAccelConciliation();
 
 
 #ifdef	__cplusplus

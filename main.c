@@ -113,62 +113,46 @@ void main(void)
             
         //setAudio(100, 0);
         
-        
-         //setLight(100, LIGHT_FRONT);
-        
-        
-        //Test of the front lights and communication with pedals
-      /* if(CanReceive(&rxObj1, rxtab)==0)
-       {
-           volatile uint8_t dummy=25;
-           switch(rxObj1.bF.id.ID >> 4)
-           {
-           case ACCEL_PEDAL:
-                 setFrontLight(10);
-               //kdkd
-               //dlld
-               break;
-           case BRAKE_PEDAL:
-               setFrontLight(100);
-               //kdkd
-               //dlld
-               break;
-           default:
-               setFrontLight(10);
-               break;
-           }
-       }*/
         if(tenMillisecElapsed==1){            
             lightsOnBrake();
             getBrake();
             driveAtStart();
-            setGas();
+            tempoOn();
             tenMillisecElapsed = 0;
-            
-          
+            if(myCar.race>=READY_RACE)
+        {
+            raceMode();
         }
+            
+        }
+            
+        
         
         if (fiftyMillisecElapsed == 1)
         {
-            engineAtStart();
-                     
+            brakeAccelConciliation();
+            engineAtKeyEvt();            
+            setGas();
             reverseMode();
-  
             driveInDrive();
-            tempoOn();
-            getDistance();
+            
+            //getDistance();
             fiftyMillisecElapsed = 0;
-        }
+        }  
+        
         
         if(SecElapsed==1){
-            controlTime();
+           // controlTime();
+            startAndStop();
             SecElapsed=0;
         }
         
         if(myCar.brokenCar!=NO_ERROR)
         {
-            resetBrokenCar();
+            //resetBrokenCar();
         }
+        
+     
         
          
     }
