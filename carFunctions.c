@@ -521,7 +521,7 @@ void driveInDrive() //OK
                 myCar.motorRpm = 4500;
             }
         }
-        if (myCar.motorRpm < 2200)
+       /* if (myCar.motorRpm < 2200)
         {
             if (myCar.lastGearLevel > 0)
             {
@@ -531,6 +531,27 @@ void driveInDrive() //OK
                 {
                     myCar.drive = 0;
                 }
+            }
+        }*/
+                if (myCar.motorRpm < 2200)
+        {
+            if (myCar.lastGearLevel > 1)
+            {
+                setGearLvl(myCar.lastGearLevel - 1);
+                myCar.motorRpm = 2500;
+             
+            }
+            else
+            {
+                if(myCar.motorRpm<1200)
+                {
+                   
+                    setGearLvl(myCar.lastGearLevel - 1);
+                    myCar.motorRpm = 1250;
+                    myCar.drive=0;
+                    
+                }
+               
             }
         }
     }
