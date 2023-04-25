@@ -47,6 +47,9 @@ extern "C" {
 #define CAR_RST 0x1F
 #define TOT_KM 0x20
 #define SETUP_ANALOG 0x21
+#define KP 1.2//0.8
+#define KI 0.0//0.1//0.1 
+#define KD 0.2//0.6//1.4
     
 
 extern uint8_t tenMillisecElapsed;
@@ -109,6 +112,8 @@ extern CAN_FILTEROBJ_ID fObj;
       uint16_t odometer;
       uint8_t gearChanged;
       uint8_t drive;
+      int8_t Anglecorrection;
+      
      
   }CAR_STATE;
   
@@ -121,8 +126,7 @@ void carStateUpdate();
 //Initalize status of each car component
 void carStateInit();
 void frontSensorRR();
-     void steeringWheelRR();
-     void slopeValueRR();
+
 
 //For the Light_Type use the following define : LIGHT_FRONT or LIGHT_BACK
 void setLight(uint8_t intensity, uint8_t Light_Type); 
@@ -197,6 +201,12 @@ void regulationMethod();
 void raceMode();
 void startAndStop();
 void brakeAccelConciliation();
+
+
+
+void steeringWheelRR();
+void slopeValueRR();
+
 
 
 #ifdef	__cplusplus

@@ -254,7 +254,7 @@ void carStateUpdate() //OK DONE
             break;
 
         case STEERING_W_REQ:
-            myCar.steeringValue = rxtab[0];
+          //  myCar.steeringValue = rxtab[0];
             break;
 
         case BROKEN_CAR:
@@ -521,7 +521,7 @@ void driveInDrive() //OK
                 myCar.motorRpm = 4500;
             }
         }
-       /* if (myCar.motorRpm < 2200)
+        /*if (myCar.motorRpm < 2200)
         {
             if (myCar.lastGearLevel > 0)
             {
@@ -533,6 +533,7 @@ void driveInDrive() //OK
                 }
             }
         }*/
+        //NEW CODE TO BE TESTED
                 if (myCar.motorRpm < 2200)
         {
             if (myCar.lastGearLevel > 1)
@@ -546,7 +547,7 @@ void driveInDrive() //OK
                 if(myCar.motorRpm<1200)
                 {
                    
-                    setGearLvl(myCar.lastGearLevel - 1);
+                    setGearLvl(0);
                     myCar.motorRpm = 1250;
                     myCar.drive=0;
                     
@@ -554,6 +555,7 @@ void driveInDrive() //OK
                
             }
         }
+        //END OF NEW CODE
     }
 }
 
@@ -749,7 +751,7 @@ void resetBrokenCar() // OK DONE
     if (myCar.brokenCar != NO_ERROR)
     {
         carStateInit();
-        resetCarState();
+        //resetCarState();
     }
 
 }
@@ -801,7 +803,154 @@ void setSteeringPos(int8_t pos, bool automatic)
 
 void raceMode()
 {
-    if (myCar.race == READY_RACE)
+    static int8_t RightValue=0, LeftValue=0;
+    if(myCar.race == READY_RACE)
+    {
+    setSteeringPos(0, 0);
+    }
+        
+    if (myCar.newSensorValue == 1)
+        {
+            myCar.newSensorValue = 0;
+            if (myCar.carSpeed> 0)
+            {
+                if(myCar.sensor.ext_sensor.frontLeftS>5 && myCar.sensor.ext_sensor.frontRightS>5)
+                {
+                if ((myCar.sensor.ext_sensor.frontLeftS) < (myCar.sensor.ext_sensor.frontRightS))
+                    {
+                    LeftValue=0;
+                    RightValue+=10;
+                    if(RightValue>100)
+                        {
+                            RightValue=100;
+                        }
+                    
+                        setSteeringPos(RightValue , 1);
+                    }
+                    else if ((myCar.sensor.ext_sensor.frontLeftS) > (myCar.sensor.ext_sensor.frontRightS))
+                    {
+                        RightValue=0;
+                        LeftValue-=10;
+                        if(LeftValue<-100)
+                        {
+                            LeftValue=-100;
+                        }
+                        setSteeringPos(LeftValue, 1);
+                    }
+                else
+                {
+                    setSteeringPos(0,1);
+                }
+
+            }
+            
+        }
+               
+    
+    
+    /*float pCorr=0, outPut=0;
+    int8_t newDir=0;
+    float angleCorrection_derivative=0;
+    
+    static float angleCorrection_Integral=0;
+    static float lastCorr=0;
+    
+    pCorr = 126 -(myCar.sensor.ext_sensor.frontLeftS+myCar.sensor.ext_sensor.frontRightS);
+    angleCorrection_Integral+=pCorr;
+    angleCorrection_derivative = pCorr-lastCorr;
+    lastCorr=pCorr;
+      if (myCar.race == READY_RACE)
+    {
+        setSteeringPos(0, 0);
+    }
+    else
+    {
+          if(myCar.lastGearLevel>0)
+          {
+          
+          outPut = (KP*pCorr+KI*angleCorrection_Integral+KD*angleCorrection_derivative);
+          if(outPut>100.0)
+          {
+              newDir=100;
+          }
+          else if(outPut<-100.0)
+          {
+              newDir=-100;
+          }
+          else
+          {
+              newDir=(int8_t)(outPut);
+          }
+          setSteeringPos(newDir,1);
+    }
+          else
+          {
+                       setSteeringPos(0,1);
+          }
+    }*/
+    
+    
+       //if (myCar.newSensorValue == 1)
+        //{
+//            myCar.newSensorValue = 0;
+//            if (myCar.lastGearLevel > 0)
+//            {
+//                
+//
+//                if ((myCar.sensor.ext_sensor.frontLeftS < 25) || (myCar.sensor.ext_sensor.frontRightS < 25))
+//                {
+//                    if ((myCar.sensor.ext_sensor.frontLeftS < myCar.sensor.ext_sensor.frontRightS))
+//                    {
+//                        setSteeringPos(myCar.steeringValue + 10 , 1);
+//                    }
+//                    else
+//                    {
+//                        setSteeringPos(myCar.steeringValue - 10, 1);
+//                    }
+//                }
+//                else
+//                {
+//                    setSteeringPos(0, 1);
+//                }
+//            }
+//        //}
+    /*
+    double pCorrLeft=0, pCorrRight=0;
+    static double angleCorrection_Integral=0;
+    static double angleCorrection_derivative=0;
+    static double lastCorr=0;
+    int16_t dirAngle=0; 
+    
+     if (myCar.race == READY_RACE)
+    {
+        setSteeringPos(0, 0);
+    }
+     else
+     {
+         pCorrLeft = (63 - myCar.sensor.ext_sensor.frontLeftS)/63.0*100.0;
+         pCorrRight=(63 - myCar.sensor.ext_sensor.frontRightS)/63.0*100.0;
+         myCar.Anglecorrection=pCorrRight-pCorrLeft;
+         angleCorrection_Integral+=myCar.Anglecorrection;
+         
+         if((myCar.Anglecorrection<10) && (myCar.Anglecorrection>-10))
+         {
+             angleCorrection_Integral=0;
+         }
+         
+         angleCorrection_derivative=((myCar.Anglecorrection-lastCorr)*1000)/10;
+         dirAngle=KP*myCar.Anglecorrection+KI*angleCorrection_Integral+KD*angleCorrection_derivative;
+         if(dirAngle>100)
+         {
+             dirAngle=100;
+         }
+         else if(dirAngle<-100)
+         {
+             dirAngle=-100;
+         }
+         setSteeringPos(dirAngle,1);
+         lastCorr=myCar.Anglecorrection;
+     }*/
+   /* if (myCar.race == READY_RACE)
     {
         setSteeringPos(0, 1);
     }
@@ -817,11 +966,11 @@ void raceMode()
                 {
                     if ((myCar.sensor.ext_sensor.frontLeftS < myCar.sensor.ext_sensor.frontRightS))
                     {
-                        setSteeringPos(myCar.steeringValue + 5 , 1);
+                        setSteeringPos(myCar.steeringValue + 10 , 1);
                     }
                     else
                     {
-                        setSteeringPos(myCar.steeringValue - 5, 1);
+                        setSteeringPos(myCar.steeringValue - 10, 1);
                     }
                 }
                 else
@@ -829,13 +978,14 @@ void raceMode()
                     setSteeringPos(0, 1);
                 }
             }
-        }
-        else
-                {
-                    setSteeringPos(0, 1);
-                }
-    }
+        }*/
+  //      else
+    //            {
+      //              setSteeringPos(0, 1);
+        //        }
+    //}
 }
+
 
 
 

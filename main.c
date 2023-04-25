@@ -97,7 +97,7 @@ void main(void)
     */
    
    //initialize Car status on power On
-   carStateInit();
+   carStateInit();   
     TMR0_SetInterruptHandler(carControlUpdate);
     
     while (1)
@@ -135,21 +135,20 @@ void main(void)
             setGas();
             reverseMode();
             driveInDrive();
-            
-            //getDistance();
+            getDistance();
             fiftyMillisecElapsed = 0;
         }  
         
         
         if(SecElapsed==1){
-           // controlTime();
+            controlTime();
             startAndStop();
             SecElapsed=0;
         }
         
         if(myCar.brokenCar!=NO_ERROR)
         {
-            //resetBrokenCar();
+            resetBrokenCar();
         }
         
      
