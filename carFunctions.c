@@ -841,6 +841,15 @@ void raceMode()
                 {
                     setSteeringPos(0,1);
                 }
+                }
+                else if(myCar.sensor.ext_sensor.frontLeftS<=5)
+                {
+                    setSteeringPos(80, 1);
+                }
+                else if(myCar.sensor.ext_sensor.frontRightS<=5)
+                {
+                    setSteeringPos(-80, 1);
+                }
 
             }
             
