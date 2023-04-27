@@ -136,6 +136,7 @@ void main(void)
             reverseMode();
             driveInDrive();
             getDistance();
+            torqueControl();
             fiftyMillisecElapsed = 0;
         }  
         

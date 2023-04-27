@@ -96,6 +96,7 @@ extern CAN_FILTEROBJ_ID fObj;
       uint8_t carId;
       uint16_t tempoSpeed; 
       uint8_t newSensorValue;
+      uint8_t newSensorValueNotRace;
       uint8_t carStop;
    
       
@@ -113,7 +114,7 @@ extern CAN_FILTEROBJ_ID fObj;
       uint8_t gearChanged;
       uint8_t drive;
       int8_t Anglecorrection;
-      
+      int16_t LastSpeed;
      
   }CAR_STATE;
   
@@ -201,7 +202,7 @@ void regulationMethod();
 void raceMode();
 void startAndStop();
 void brakeAccelConciliation();
-
+void torqueControl();
 
 
 void steeringWheelRR();
