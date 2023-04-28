@@ -40,12 +40,10 @@
     OF FEES, IF ANY, THAT YOU HAVE PAID DIRECTLY TO MICROCHIP FOR THIS 
     SOFTWARE.
  */
-    
+
 #include "mcc_generated_files/mcc.h"
 #include "can.h"
 #include "carFunctions.h"
-   
-
 
 /*
                          Main application
@@ -55,108 +53,63 @@ void main(void)
     // Initialize the device
     SYSTEM_Initialize();
 
-    // If using interrupts in PIC18 High/Low Priority Mode you need to enable the Global High and Low Interrupts
-    // If using interrupts in PIC Mid-Range Compatibility Mode you need to enable the Global and Peripheral Interrupts
-    // Use the following macros to:
-
     // Enable the Global Interrupts
     INTERRUPT_GlobalInterruptEnable();
 
-    // Disable the Global Interrupts
-    //INTERRUPT_GlobalInterruptDisable();
-
-    // Enable the Peripheral Interrupts
-    //INTERRUPT_PeripheralInterruptEnable();
-
-    // Disable the Peripheral Interrupts
-    //INTERRUPT_PeripheralInterruptDisable();
-
-    //int8_t CanSend(CAN_TX_MSGOBJ * txObj, uint8_t * txd)
     SPI2_Open(SPI2_DEFAULT);
     CanInit(0, CAN_250K_500K);
-   initCar();
-            
-   
-   //Recieve Motor Status
+    initCar();
 
-   
-   //OLD - test du filtre
-  /* CAN_RX_MSGOBJ rxObj1;
-   uint8_t rxtab[8];
-       // define filter to use --------------------------------------------------
-    CAN_FILTEROBJ_ID fObj;
-    fObj.ID = 0x3;              // standard filter 11 bits value
-    fObj.SID11 = 0;               // 12 bits only used in FD mode
-    fObj.EXIDE = 0;               // assign to standard identifiers
-    // define mask for filter ------------------------------------------------
-    CAN_MASKOBJ_ID mObj;
-    mObj.MID = 0xF;             // check all the 11 bits in standard ID
-    mObj.MSID11 = 0;              // 12 bits only used in FD mode
-    mObj.MIDE = 1;                // match identifier size in filter
-    CanSetFilter(CAN_FILTER0,&fObj,&mObj);
-    */
-   
-   //initialize Car status on power On
-   carStateInit();   
+    carStateInit();
     TMR0_SetInterruptHandler(carControlUpdate);
-    
+
     while (1)
     {
-        
         carStateUpdate();
-        
-           if(myCar.gearChanged==1)
+
+        if (myCar.gearChanged == 1)
         {
             regulationMethod();
-            myCar.gearChanged=0;
+            myCar.gearChanged = 0;
         }
-            
-        //setAudio(100, 0);
-        
-        if(tenMillisecElapsed==1){            
+
+        if (tenMillisecElapsed == 1)
+        {
             lightsOnBrake();
             getBrake();
             driveAtStart();
-            tempoOn();
             tenMillisecElapsed = 0;
-            if(myCar.race>=READY_RACE)
-        {
-            raceMode();
+
+            if (myCar.race >= READY_RACE)
+            {
+                raceMode();
+            }
         }
-            
-        }
-            
-        
-        
+
         if (fiftyMillisecElapsed == 1)
         {
+            tempoOn();
             brakeAccelConciliation();
-            engineAtKeyEvt();            
+            engineAtKeyEvt();
             setGas();
             reverseMode();
             driveInDrive();
             getDistance();
-            torqueControl();
+            //torqueControl();//Unused, this was not working 
+            startAndStop();          
             fiftyMillisecElapsed = 0;
-        }  
-        
-        
-        if(SecElapsed==1){
-            controlTime();
-            startAndStop();
-            SecElapsed=0;
         }
-        
-        if(myCar.brokenCar!=NO_ERROR)
+
+        if (SecElapsed == 1)
+        {
+            controlTime();
+
+            SecElapsed = 0;
+        }
+
+        if (myCar.brokenCar != NO_ERROR)
         {
             resetBrokenCar();
         }
-        
-     
-        
-         
     }
 }
-/**
- End of File
-*/
